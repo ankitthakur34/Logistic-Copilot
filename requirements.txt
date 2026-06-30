@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+python-dotenv
+pandas
+pydantic
+alembic
+flask
+flask_sqlalchemy
+flask_migrate
