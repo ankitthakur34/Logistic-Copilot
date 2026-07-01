@@ -1,5 +1,5 @@
 from app.database.db import db
-import datetime
+from datetime import datetime
 import enum
 
 class TaskPriority(enum.Enum):

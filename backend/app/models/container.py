@@ -1,6 +1,5 @@
 from app.database.db import db
-import datetime
-
+from datetime import datetime
 class Container(db.Model):
 
     __tablename__ = "containers"

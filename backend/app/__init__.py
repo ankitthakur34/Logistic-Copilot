@@ -23,4 +23,6 @@ def create_app():
         db
     )
 
+    from app import models
+
     return app
