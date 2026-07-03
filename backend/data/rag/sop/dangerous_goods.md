@@ -1,35 +1,28 @@
-# Dangerous Goods SOP
+---
+document_type: sop
+title: Dangerous Goods Handling
+department: Safety
+version: 1.0
+tags:
+ - dangerous goods
+ - hazmat
+---
 
-Purpose
+# Dangerous Goods Handling
 
-Handling hazardous cargo.
+## Purpose
 
-Classification
+This SOP explains how hazardous cargo should be handled during transportation.
 
-IMO Class 1
+## Procedure
 
-IMO Class 2
+1. Verify IMDG classification.
+2. Inspect container condition.
+3. Confirm hazardous labels.
+4. Maintain segregation requirements.
+5. Monitor container throughout transportation.
+6. Notify port authorities before arrival.
 
-IMO Class 3
+## Escalation
 
-Procedure
-
-1.
-
-Verify documentation.
-
-2.
-
-Inspect labels.
-
-3.
-
-Check container seal.
-
-4.
-
-Store separately.
-
-Emergency
-
-...
+Immediately report damaged hazardous containers to the Safety Team.

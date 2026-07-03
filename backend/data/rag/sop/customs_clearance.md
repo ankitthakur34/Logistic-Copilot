@@ -1,33 +1,37 @@
-# Customs Clearance
+---
+document_type: sop
+title: Customs Clearance Procedure
+department: Customs
+version: 1.0
+tags:
+ - customs
+ - import
+ - export
+---
 
-Purpose
+# Customs Clearance Procedure
 
-Documents Required
+## Purpose
 
-Commercial Invoice
+This SOP defines the standard customs clearance process for all international cargo shipments handled by Maersk Operations.
 
-Packing List
+## Procedure
 
-Bill Of Lading
+1. Verify commercial invoice.
+2. Verify packing list.
+3. Verify Bill of Lading.
+4. Ensure all customs declarations are complete.
+5. Submit required documents to customs authorities.
+6. Monitor customs inspection status.
+7. Resolve any customs queries.
+8. Update shipment status after customs approval.
 
-Import License
+## Escalation
 
-Workflow
+If customs clearance exceeds 24 hours, notify the Operations Manager and inform the customer.
 
-Booking
+## Related Teams
 
-↓
-
-Arrival
-
-↓
-
-Inspection
-
-↓
-
-Duty
-
-↓
-
-Release
+- Customs Team
+- Operations Team
+- Customer Service
