@@ -9,3 +9,7 @@ alembic
 flask
 flask_sqlalchemy
 flask_migrate
+langchain-text-splitters
+sentence-transformers
+joblib
+chromadb
