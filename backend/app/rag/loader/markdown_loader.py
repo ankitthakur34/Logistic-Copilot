@@ -1,4 +1,5 @@
 from pathlib import Path
+import yaml
 
 from app.rag.loader.base_loader import BaseLoader
 from app.rag.schema.document import Document
@@ -18,21 +19,63 @@ class MarkdownLoader(BaseLoader):
 
         for file in markdown_files:
 
-            content = file.read_text(
+            raw_text = file.read_text(
                 encoding="utf-8"
             )
 
+            frontmatter = {}
+            content = raw_text
+
+            # -----------------------------
+            # Parse YAML Front Matter
+            # -----------------------------
+            if raw_text.startswith("---"):
+
+                parts = raw_text.split(
+                    "---",
+                    2,
+                )
+
+                if len(parts) >= 3:
+
+                    try:
+
+                        frontmatter = yaml.safe_load(
+                            parts[1]
+                        ) or {}
+
+                        content = parts[2].strip()
+
+                    except yaml.YAMLError:
+
+                        print(
+                            f"[WARNING] Invalid YAML in {file.name}"
+                        )
+
+            # -----------------------------
+            # Metadata
+            # -----------------------------
             metadata = {
+
                 "source": file.name,
+
                 "folder": file.parent.name,
+
                 "path": str(file),
+
+                **frontmatter,
             }
 
-            document = Document(
-                content=content,
-                metadata=metadata,
-            )
+            documents.append(
 
-            documents.append(document)
+                Document(
+
+                    content=content,
+
+                    metadata=metadata,
+
+                )
+
+            )
 
         return documents

@@ -1,15 +1,11 @@
 from pathlib import Path
-from typing import Counter
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from numpy import rint
-from sqlalchemy.util import counter
-
 
 from app.rag.schema.document import (
     Document,
     ParentChunk,
-    ChildChunk
+    ChildChunk,
 )
 
 
@@ -47,18 +43,19 @@ class ParentChildChunker:
                 document.content
             )
 
+            file_id = (
+                Path(document.metadata["path"])
+                .with_suffix("")
+                .as_posix()
+                .replace("/", "_")
+                .replace("\\", "_")
+            )
+
             for parent_index, parent_text in enumerate(parents):
 
-                file_id = (
-        Path(document.metadata["path"])
-    .with_suffix("")
-    .as_posix()
-    .replace("/", "_")
-    .replace("\\", "_")
-)
-
-                parent_id = f"{file_id}_parent_{parent_index}"
-                
+                parent_id = (
+                    f"{file_id}_parent_{parent_index}"
+                )
 
                 parent = ParentChunk(
                     id=parent_id,
@@ -71,25 +68,8 @@ class ParentChildChunker:
                 children = self.child_splitter.split_text(
                     parent_text
                 )
-                if document.metadata["source"] == "port_operations.md":
-
-                    print("=" * 80)
-                    print("Children Returned:", len(children))
-
-                    for idx, text in enumerate(children):
-                        print(f"\n----- Child {idx} -----")
-                        print(repr(text))
-                    print("\nEnumerate Test")
-
-                    for idx, _ in enumerate(children):
-                        print(idx)    
 
                 for child_index, child_text in enumerate(children):
-                    print(
-    "Creating ->",
-    parent_id,
-    child_index,
-)
 
                     child = ChildChunk(
                         id=f"{parent_id}_child_{child_index}",
@@ -99,8 +79,5 @@ class ParentChildChunker:
                     )
 
                     child_chunks.append(child)
-                
-
-
 
         return parent_chunks, child_chunks
