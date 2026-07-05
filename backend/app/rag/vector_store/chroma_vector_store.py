@@ -1,124 +1,111 @@
 import chromadb
 
-from app.rag.schema.embedding_result import EmbeddingResult
 from app.rag.vector_store.base_vector_store import BaseVectorStore
+from app.rag.schema.search_result import SearchResult
 
 
 class ChromaVectorStore(BaseVectorStore):
 
     def __init__(
         self,
-        collection_name: str = "cargo_ai",
         persist_directory: str = "./chroma_db",
+        collection_name: str = "cargo_ai",
     ):
-
-        self._collection_name = collection_name
 
         self.client = chromadb.PersistentClient(
             path=persist_directory
         )
 
         self.collection = self.client.get_or_create_collection(
-            name=self._collection_name
+            name=collection_name
         )
 
-    @property
-    def collection_name(self) -> str:
-        return self._collection_name
+    # ---------------------------------------------------------
+    # Index
+    # ---------------------------------------------------------
 
     def index(
-        self,
-        embedding_result: EmbeddingResult,
-    ):
-
-        ids = []
-        documents = []
-        embeddings = []
-        metadatas = []
-
-        for chunk in embedding_result.embedded_chunks:
-
-            ids.append(
-                chunk.id
-            )
-
-            documents.append(
-                chunk.content
-            )
-
-            embeddings.append(
-                chunk.embedding
-            )
-
-            metadata = dict(
-                chunk.metadata
-            )
-
-            metadata["parent_id"] = chunk.parent_id
-
-            metadatas.append(
-                metadata
-            )
+    self,
+    child_chunks,
+    embeddings,
+):
 
         self.collection.upsert(
 
-            ids=ids,
+        ids=[
+            chunk.id
+            for chunk in child_chunks
+        ],
 
-            documents=documents,
+        documents=[
+            chunk.content
+            for chunk in child_chunks
+        ],
 
-            embeddings=embeddings,
+        embeddings=embeddings,
 
-            metadatas=metadatas,
+        metadatas=[
+            {
+                **chunk.metadata,
+                "parent_id": chunk.parent_id,
+            }
+            for chunk in child_chunks
+        ],
+    )
 
-        )
+   
+         
+           
 
-        print(
-            f"[CHROMA] Indexed {len(ids)} vectors "
-            f"into '{self.collection_name}'"
-        )
+    # ---------------------------------------------------------
+    # Search
+    # ---------------------------------------------------------
 
-    def similarity_search(
-        self,
-        query_embedding: list[float],
-        k: int = 5,
-    ):
+    def search(
+    self,
+    query_embedding: list[float],
+    top_k: int = 5,
+) -> SearchResult:
 
-        results = self.collection.query(
+        result = self.collection.query(
+        query_embeddings=[query_embedding],
+        n_results=top_k,
+    )
 
-            query_embeddings=[
-                query_embedding
-            ],
+        return SearchResult(
 
-            n_results=k,
+        ids=result["ids"][0],
 
-        )
+        documents=result["documents"][0],
 
-        return results
+        metadatas=result["metadatas"][0],
 
-    def delete_collection(
-        self,
-    ):
+        scores=result["distances"][0],
 
-        self.client.delete_collection(
-            self.collection_name
-        )
+    )
 
-        print(
-            f"[CHROMA] Deleted collection "
-            f"'{self.collection_name}'"
-        )
+    # ---------------------------------------------------------
+    # Reset
+    # ---------------------------------------------------------
 
-    def reset(
-        self,
-    ):
+    def reset(self):
 
-        self.delete_collection()
+        name = self.collection.name
+
+        self.client.delete_collection(name)
 
         self.collection = self.client.get_or_create_collection(
-            name=self.collection_name
+            name=name
         )
 
         print(
-            f"[CHROMA] Recreated collection "
-            f"'{self.collection_name}'"
+            f"[CHROMA] Recreated collection '{name}'"
         )
+
+    # ---------------------------------------------------------
+    # Count
+    # ---------------------------------------------------------
+
+    def count(self):
+
+        return self.collection.count()

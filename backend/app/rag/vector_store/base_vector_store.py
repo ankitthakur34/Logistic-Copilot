@@ -1,34 +1,30 @@
 from abc import ABC, abstractmethod
 
-from app.rag.schema.embedding_result import EmbeddingResult
+from app.rag.schema.document import ChildChunk
+from app.rag.schema.search_result import SearchResult
 
 
 class BaseVectorStore(ABC):
 
-    @property
-    @abstractmethod
-    def collection_name(self) -> str:
-        pass
-
     @abstractmethod
     def index(
         self,
-        embedding_result: EmbeddingResult,
+        child_chunks: list[ChildChunk],
+        embeddings: list[list[float]],
     ):
+        """
+        Store child chunks and their embeddings
+        inside the vector database.
+        """
         pass
 
     @abstractmethod
-    def similarity_search(
+    def search(
         self,
         query_embedding: list[float],
-        k: int = 5,
-    ):
-        pass
-
-    @abstractmethod
-    def delete_collection(self):
-        pass
-
-    @abstractmethod
-    def reset(self):
+        top_k: int = 5,
+    ) -> SearchResult:
+        """
+        Search the vector database.
+        """
         pass
