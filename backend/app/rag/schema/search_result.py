@@ -6,8 +6,8 @@ class SearchResult:
 
     ids: list[str]
 
-    documents: list[str]
+    # documents: list[str]
 
-    metadatas: list[dict]
+    # metadatas: list[dict]
 
     scores: list[float]

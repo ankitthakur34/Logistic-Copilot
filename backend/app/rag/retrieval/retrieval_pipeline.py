@@ -29,6 +29,7 @@ class RetrievalPipeline:
 
         search_result = self.retriever.retrieve(
             query_embedding=query_embedding,
+            question=question,
             top_k=top_k,
         )
 
@@ -36,23 +37,24 @@ class RetrievalPipeline:
 
         parents = {}
 
-        for idx in range(len(search_result.ids)):
+        for idx,child_id in enumerate(search_result.ids):
+               
 
-            metadata = search_result.metadatas[idx]
+            child_chunk = ingestion.child_lookup[child_id]
 
             child = RetrievedChild(
 
-                id=search_result.ids[idx],
+        id=child_chunk.id,
 
-                parent_id=metadata["parent_id"],
+        parent_id=child_chunk.parent_id,
 
-                content=search_result.documents[idx],
+        content=child_chunk.content,
 
-                metadata=metadata,
+        metadata=child_chunk.metadata,
 
-                score=search_result.scores[idx],
+        score=search_result.scores[idx],
 
-            )
+    )
 
             children.append(child)
 

@@ -13,7 +13,8 @@ class ChromaRetriever(BaseRetriever):
     def retrieve(
         self,
         query_embedding,
-        top_k=5,
+        question=None,
+        top_k=20,
     ):
 
         return self.vector_store.search(

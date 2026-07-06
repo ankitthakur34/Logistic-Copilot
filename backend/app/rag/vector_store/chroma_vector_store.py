@@ -24,6 +24,12 @@ class ChromaVectorStore(BaseVectorStore):
     # Index
     # ---------------------------------------------------------
 
+    def clear(self):
+
+        self.collection.delete(
+        where={}
+    )
+
     def index(
     self,
     child_chunks,
@@ -76,9 +82,9 @@ class ChromaVectorStore(BaseVectorStore):
 
         ids=result["ids"][0],
 
-        documents=result["documents"][0],
+        # documents=result["documents"][0],
 
-        metadatas=result["metadatas"][0],
+        # metadatas=result["metadatas"][0],
 
         scores=result["distances"][0],
 

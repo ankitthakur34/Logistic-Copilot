@@ -3,6 +3,22 @@ import yaml
 
 from app.rag.loader.base_loader import BaseLoader
 from app.rag.schema.document import Document
+from datetime import date, datetime
+
+
+def normalize_metadata(metadata: dict):
+
+    normalized = {}
+
+    for key, value in metadata.items():
+
+        if isinstance(value, (date, datetime)):
+            normalized[key] = value.isoformat()
+
+        else:
+            normalized[key] = value
+
+    return normalized
 
 
 class MarkdownLoader(BaseLoader):
@@ -68,13 +84,11 @@ class MarkdownLoader(BaseLoader):
 
             documents.append(
 
-                Document(
-
-                    content=content,
-
-                    metadata=metadata,
-
-                )
+               
+              Document(
+    content=content,
+    metadata=normalize_metadata(metadata),
+)
 
             )
 

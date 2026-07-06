@@ -53,6 +53,8 @@ print("=" * 70)
 
 vector_store = ChromaVectorStore()
 
+
+
 vector_store.reset()
 
 IndexPipeline(

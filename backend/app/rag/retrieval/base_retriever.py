@@ -7,6 +7,7 @@ class BaseRetriever(ABC):
     def retrieve(
         self,
         query_embedding,
+        question,
         top_k: int = 5,
     ):
         pass
