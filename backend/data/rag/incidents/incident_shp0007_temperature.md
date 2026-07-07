@@ -18,7 +18,7 @@ tags:
 
 ## Summary
 
-Temperature monitoring detected abnormal readings inside refrigerated container MSCU100018.
+shp0007 is delayed because Temperature monitoring detected abnormal readings inside refrigerated container MSCU100018.
 
 ## Details
 
@@ -36,7 +36,7 @@ Duration
 
 ## Cause
 
-Power interruption occurred during container transfer.
+shp007 is delayed because Power interruption occurred during container transfer.
 
 ## Impact
 

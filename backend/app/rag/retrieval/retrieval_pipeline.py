@@ -1,4 +1,3 @@
-from app.rag.schema.document import ParentChunk
 from app.rag.schema.retrieval_result import (
     RetrievalResult,
     RetrievedChild,
@@ -11,52 +10,70 @@ class RetrievalPipeline:
         self,
         embedding_model,
         retriever,
+        reranker=None,
     ):
 
         self.embedding_model = embedding_model
         self.retriever = retriever
+        self.reranker = reranker
 
     def run(
         self,
         question: str,
         ingestion,
         top_k: int = 5,
-    ):
+    ) -> RetrievalResult:
 
         query_embedding = self.embedding_model.embed_query(
-            question
+            question,
         )
+
+        candidate_count = max(
+            top_k * 4,
+            20,
+        )
+#         candidate_count = max(
+#     top_k * 10,
+#     50,
+# )
 
         search_result = self.retriever.retrieve(
             query_embedding=query_embedding,
             question=question,
-            top_k=top_k,
+            top_k=candidate_count,
         )
 
         children = []
 
-        parents = {}
-
-        for idx,child_id in enumerate(search_result.ids):
-               
+        for idx, child_id in enumerate(search_result.ids):
 
             child_chunk = ingestion.child_lookup[child_id]
 
             child = RetrievedChild(
-
-        id=child_chunk.id,
-
-        parent_id=child_chunk.parent_id,
-
-        content=child_chunk.content,
-
-        metadata=child_chunk.metadata,
-
-        score=search_result.scores[idx],
-
-    )
+                id=child_chunk.id,
+                parent_id=child_chunk.parent_id,
+                content=child_chunk.content,
+                metadata=child_chunk.metadata,
+                score=search_result.scores[idx],
+            )
 
             children.append(child)
+
+        if self.reranker is not None:
+
+            children = self.reranker.rerank(
+                question=question,
+                children=children,
+                top_k=top_k,
+            )
+
+        else:
+
+            children = children[:top_k]
+
+        parents = {}
+
+        for child in children:
 
             parent = ingestion.parent_lookup[
                 child.parent_id
@@ -65,9 +82,6 @@ class RetrievalPipeline:
             parents[parent.id] = parent
 
         return RetrievalResult(
-
             children=children,
-
             parents=list(parents.values()),
-
         )
