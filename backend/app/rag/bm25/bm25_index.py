@@ -14,21 +14,21 @@ class BM25Index:
         self.child_chunks: list[ChildChunk] = []
 
     def build(
-        self,
-        child_chunks: list[ChildChunk],
-    ):
+    self,
+    child_chunks,
+):
 
         self.child_chunks = child_chunks
 
+        self.child_chunks_by_id = {
+        chunk.id: chunk
+        for chunk in child_chunks
+    }
+
         corpus = [
-
-            Tokenizer.tokenize(
-                chunk.content
-            )
-
-            for chunk in child_chunks
-
-        ]
+        Tokenizer.tokenize(chunk.content)
+        for chunk in child_chunks
+    ]
 
         self.bm25 = BM25Okapi(corpus)
 

@@ -41,6 +41,7 @@ class HybridRetriever(BaseRetriever):
             query_embedding=query_embedding,
 
             question=question,
+            where=where,
 
             top_k=top_k,
 
