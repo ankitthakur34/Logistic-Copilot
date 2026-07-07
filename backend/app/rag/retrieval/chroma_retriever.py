@@ -15,9 +15,11 @@ class ChromaRetriever(BaseRetriever):
         query_embedding,
         question=None,
         top_k=20,
+        where=None
     ):
 
         return self.vector_store.search(
             query_embedding=query_embedding,
             top_k=top_k,
+            where=where
         )

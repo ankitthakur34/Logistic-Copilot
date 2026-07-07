@@ -23,6 +23,7 @@ class BaseVectorStore(ABC):
         self,
         query_embedding: list[float],
         top_k: int = 5,
+        where : dict | None = None,
     ) -> SearchResult:
         """
         Search the vector database.

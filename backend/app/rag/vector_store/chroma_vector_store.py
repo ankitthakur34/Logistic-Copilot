@@ -1,4 +1,6 @@
+
 import chromadb
+from torch import where
 
 from app.rag.vector_store.base_vector_store import BaseVectorStore
 from app.rag.schema.search_result import SearchResult
@@ -71,12 +73,29 @@ class ChromaVectorStore(BaseVectorStore):
     self,
     query_embedding: list[float],
     top_k: int = 5,
+    where : dict | None = None,
 ) -> SearchResult:
 
+        kwargs = {
+
+        "query_embeddings": [query_embedding],
+
+        "n_results": top_k,
+
+    }
+        
+        print("=" * 80)
+        print("WHERE FILTER")
+        print(where)
+        print("=" * 80)
+
+        if where:
+
+            kwargs["where"] = where
+
         result = self.collection.query(
-        query_embeddings=[query_embedding],
-        n_results=top_k,
-    )
+        **kwargs,
+        )
 
         return SearchResult(
 
