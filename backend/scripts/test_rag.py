@@ -10,46 +10,143 @@ from app.rag.vector_store.chroma_vector_store import (
     ChromaVectorStore,
 )
 
+from app.rag.bm25.bm25_index import BM25Index
+
 from app.rag.retrieval.chroma_retriever import (
     ChromaRetriever,
+)
+
+from app.rag.retrieval.bm25_retriever import (
+    BM25Retriever,
+)
+
+from app.rag.retrieval.hybrid_retriever import (
+    HybridRetriever,
+)
+
+from app.rag.retrieval.multi_query_retriever import (
+    MultiQueryRetriever,
+)
+
+from app.rag.retrieval.rrf import (
+    ReciprocalRankFusion,
 )
 
 from app.rag.retrieval.retrieval_pipeline import (
     RetrievalPipeline,
 )
 
-from app.rag.context.default_context_builder import (
-    DefaultContextBuilder,
+from app.rag.reranker.cross_encoder_reranker import (
+    CrossEncoderReranker,
 )
 
-from app.rag.prompts.cargo_prompt_builder import (
-    CargoPromptBuilder,
+from app.rag.multi_query.llm_multi_query_generator import (
+    LLMMultiQueryGenerator,
 )
 
 from app.rag.llm.groq_llm import (
     GroqLLM,
 )
 
-from app.rag.service.rag_service import (
-    RAGService,
+from app.rag.prompts.cargo_prompt_builder import (
+    CargoPromptBuilder,
+)
+
+from app.rag.generation.answer_generator import (
+    AnswerGenerator,
+)
+
+from app.rag.generation.answer_pipeline import (
+    AnswerPipeline,
 )
 
 
-rag = RAGService(
+###############################################################################
+# INGESTION
+###############################################################################
 
-    ingestion_pipeline=IngestionPipeline(
-        loader=MarkdownLoader("data/rag"),
-        chunker=ParentChildChunker(),
+ingestion = IngestionPipeline(
+
+    loader=MarkdownLoader("data/rag"),
+
+    chunker=ParentChildChunker(),
+
+).run()
+
+
+###############################################################################
+# BM25
+###############################################################################
+
+bm25 = BM25Index()
+
+bm25.build(
+    ingestion.child_chunks,
+)
+
+
+###############################################################################
+# HYBRID RETRIEVER
+###############################################################################
+
+hybrid_retriever = HybridRetriever(
+
+    dense_retriever=ChromaRetriever(
+
+        vector_store=ChromaVectorStore(),
+
     ),
 
-    retrieval_pipeline=RetrievalPipeline(
-        embedding_model=SentenceTransformerEmbedding(),
-        retriever=ChromaRetriever(
-            vector_store=ChromaVectorStore(),
-        ),
+    sparse_retriever=BM25Retriever(
+
+        bm25,
+
     ),
 
-    context_builder=DefaultContextBuilder(),
+    fusion=ReciprocalRankFusion(),
+
+)
+
+
+###############################################################################
+# MULTI QUERY RETRIEVER
+###############################################################################
+
+multi_query_retriever = MultiQueryRetriever(
+
+    embedding_model=SentenceTransformerEmbedding(),
+
+    generator=LLMMultiQueryGenerator(
+
+        llm=GroqLLM(),
+
+    ),
+
+    retriever=hybrid_retriever,
+
+    fusion=ReciprocalRankFusion(),
+
+)
+
+
+###############################################################################
+# RETRIEVAL PIPELINE
+###############################################################################
+
+retrieval_pipeline = RetrievalPipeline(
+
+    retriever=multi_query_retriever,
+
+    reranker=CrossEncoderReranker(),
+
+)
+
+
+###############################################################################
+# ANSWER GENERATOR
+###############################################################################
+
+answer_generator = AnswerGenerator(
 
     prompt_builder=CargoPromptBuilder(),
 
@@ -58,80 +155,97 @@ rag = RAGService(
 )
 
 
-questions = [
+###############################################################################
+# ANSWER PIPELINE
+###############################################################################
 
-    "what to do for bill of lading",
+pipeline = AnswerPipeline(
 
-    "why SHP0007 is delayed",
+    retrieval_pipeline=retrieval_pipeline,
 
-]
+    answer_generator=answer_generator,
+
+)
 
 
-for question in questions:
+###############################################################################
+# QUESTION
+###############################################################################
+
+question = "Why is shipment SHP0007 delayed?"
+
+
+###############################################################################
+# RUN
+###############################################################################
+
+result = pipeline.run(
+
+    question=question,
+
+    ingestion=ingestion,
+
+    top_k=5,
+
+)
+
+
+###############################################################################
+# PRINT
+###############################################################################
+
+print("=" * 80)
+print("QUESTION")
+print("=" * 80)
+
+print(question)
+
+print()
+
+print("=" * 80)
+print("ANSWER")
+print("=" * 80)
+
+print(result.answer)
+
+print()
+
+print("=" * 80)
+print("MODEL")
+print("=" * 80)
+
+print(result.llm_result.model)
+
+print()
+
+print("=" * 80)
+print("TOKEN USAGE")
+print("=" * 80)
+
+print(result.llm_result.usage)
+
+print()
+
+print("=" * 80)
+print("SOURCES")
+print("=" * 80)
+
+for parent in result.retrieval.parents:
+
+    print("-", parent.metadata.get("source"))
+
+print()
+
+print("=" * 80)
+print("PARENTS")
+print("=" * 80)
+
+for parent in result.retrieval.parents:
 
     print()
-    print("=" * 80)
-    print("QUESTION")
-    print("=" * 80)
-    print(question)
 
-    response = rag.ask(question)
+    print(parent.id)
 
     print()
-    print("=" * 80)
-    print("ANSWER")
-    print("=" * 80)
-    print(response.answer)
 
-    print()
-    print("=" * 80)
-    print("MODEL")
-    print("=" * 80)
-    print(response.model)
-
-    print()
-    print("=" * 80)
-    print("TOKEN USAGE")
-    print("=" * 80)
-    print(response.usage)
-
-    print()
-    print("=" * 80)
-    print("SOURCES")
-    print("=" * 80)
-
-    if response.context.sources:
-
-        for source in response.context.sources:
-
-            print(f"- {source}")
-
-    else:
-
-        print("No sources")
-
-    # print()
-    # print("=" * 80)
-    # print("SYSTEM PROMPT")
-    # print("=" * 80)
-
-    # print(response.prompt.system_prompt)
-
-    # print()
-    # print("=" * 80)
-    # print("USER PROMPT")
-    # print("=" * 80)
-
-    # print(response.prompt.user_prompt)
-
-    # print()
-    # print("=" * 80)
-    # print("FULL PROMPT")
-    # print("=" * 80)
-
-    # print(response.prompt.full_prompt)
-
-    print()
-    print("=" * 80)
-    print("END")
-    print("=" * 80)
+    print(parent.content[:500])

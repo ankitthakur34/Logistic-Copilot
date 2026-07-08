@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.rag.context.context_result import ContextResult
+from app.rag.schema.retrieval_result import RetrievalResult
 from app.rag.prompts.prompt_result import PromptResult
 
 
@@ -10,6 +10,6 @@ class BasePromptBuilder(ABC):
     def build(
         self,
         question: str,
-        context: ContextResult,
+        retrieval: RetrievalResult,
     ) -> PromptResult:
         pass
