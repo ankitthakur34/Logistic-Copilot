@@ -48,24 +48,8 @@ from app.rag.llm.groq_llm import (
     GroqLLM,
 )
 
-from app.rag.prompts.cargo_prompt_builder import (
-    CargoPromptBuilder,
-)
-
-from app.rag.generation.answer_generator import (
-    AnswerGenerator,
-)
-
-from app.rag.generation.answer_pipeline import (
-    AnswerPipeline,
-)
-
 from app.rag.context_compression.child_context_compressor import (
     ChildContextCompressor,
-)
-
-from app.rag.context_compression.context_compression_pipeline import (
-    ContextCompressionPipeline,
 )
 
 
@@ -94,10 +78,10 @@ bm25.build(
 
 
 ###############################################################################
-# HYBRID RETRIEVER
+# HYBRID
 ###############################################################################
 
-hybrid_retriever = HybridRetriever(
+hybrid = HybridRetriever(
 
     dense_retriever=ChromaRetriever(
 
@@ -117,10 +101,10 @@ hybrid_retriever = HybridRetriever(
 
 
 ###############################################################################
-# MULTI QUERY RETRIEVER
+# MULTI QUERY
 ###############################################################################
 
-multi_query_retriever = MultiQueryRetriever(
+multi = MultiQueryRetriever(
 
     embedding_model=SentenceTransformerEmbedding(),
 
@@ -130,7 +114,7 @@ multi_query_retriever = MultiQueryRetriever(
 
     ),
 
-    retriever=hybrid_retriever,
+    retriever=hybrid,
 
     fusion=ReciprocalRankFusion(),
 
@@ -138,52 +122,14 @@ multi_query_retriever = MultiQueryRetriever(
 
 
 ###############################################################################
-# RETRIEVAL PIPELINE
+# RETRIEVAL
 ###############################################################################
 
-retrieval_pipeline = RetrievalPipeline(
+pipeline = RetrievalPipeline(
 
-    retriever=multi_query_retriever,
+    retriever=multi,
 
     reranker=CrossEncoderReranker(),
-
-)
-
-###############################################################################
-# CONTEXT COMPRESSION
-###############################################################################
-
-compression_pipeline = ContextCompressionPipeline(
-
-    compressor=ChildContextCompressor(),
-
-)
-
-
-###############################################################################
-# ANSWER GENERATOR
-###############################################################################
-
-answer_generator = AnswerGenerator(
-
-    prompt_builder=CargoPromptBuilder(),
-
-    llm=GroqLLM(),
-
-)
-
-
-###############################################################################
-# ANSWER PIPELINE
-###############################################################################
-
-pipeline = AnswerPipeline(
-
-    retrieval_pipeline=retrieval_pipeline,
-    # context compression pipeline to compress the retrieval results before generating the answer
-    context_compression_pipeline=compression_pipeline,
-
-    answer_generator=answer_generator,
 
 )
 
@@ -195,11 +141,7 @@ pipeline = AnswerPipeline(
 question = "Why is shipment SHP0007 delayed?"
 
 
-###############################################################################
-# RUN
-###############################################################################
-
-result = pipeline.run(
+retrieval = pipeline.run(
 
     question=question,
 
@@ -211,61 +153,43 @@ result = pipeline.run(
 
 
 ###############################################################################
+# COMPRESS
+###############################################################################
+
+compressor = ChildContextCompressor()
+
+compressed = compressor.compress(
+
+    retrieval,
+
+)
+
+
+###############################################################################
 # PRINT
 ###############################################################################
 
 print("=" * 80)
-print("QUESTION")
+print("ORIGINAL PARENTS")
 print("=" * 80)
 
-print(question)
-
-print()
-
-print("=" * 80)
-print("ANSWER")
-print("=" * 80)
-
-print(result.answer)
-
-print()
-
-print("=" * 80)
-print("MODEL")
-print("=" * 80)
-
-print(result.llm_result.model)
-
-print()
-
-print("=" * 80)
-print("TOKEN USAGE")
-print("=" * 80)
-
-print(result.llm_result.usage)
-
-print()
-
-print("=" * 80)
-print("SOURCES")
-print("=" * 80)
-
-for parent in result.retrieval.parents:
-
-    print("-", parent.metadata.get("source"))
-
-print()
-
-print("=" * 80)
-print("PARENTS")
-print("=" * 80)
-
-for parent in result.retrieval.parents:
+for parent in retrieval.parents:
 
     print()
-
     print(parent.id)
+    print("-" * 80)
+    print(parent.content[:700])
+
+
+print()
+
+print("=" * 80)
+print("COMPRESSED PARENTS")
+print("=" * 80)
+
+for parent in compressed.parents:
 
     print()
-
-    print(parent.content[:500])
+    print(parent.id)
+    print("-" * 80)
+    print(parent.content)

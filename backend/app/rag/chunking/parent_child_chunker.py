@@ -75,7 +75,9 @@ class ParentChildChunker:
                         id=f"{parent_id}_child_{child_index}",
                         parent_id=parent_id,
                         content=child_text,
+                        child_index=child_index,
                         metadata=document.metadata.copy(),
+                        
                     )
 
                     child_chunks.append(child)

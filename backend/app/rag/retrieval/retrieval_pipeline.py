@@ -68,10 +68,14 @@ class RetrievalPipeline:
                     parent_id=child_chunk.parent_id,
 
                     content=child_chunk.content,
+                    child_index=child_chunk.child_index,
 
                     metadata=child_chunk.metadata,
 
+                    
+
                     score=search_result.scores[idx],
+                    
 
                 )
 

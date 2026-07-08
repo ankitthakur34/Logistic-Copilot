@@ -11,8 +11,11 @@ class RetrievedChild:
     parent_id: str
 
     content: str
+    child_index: int
 
     metadata: dict
+
+    
 
     score: float
 

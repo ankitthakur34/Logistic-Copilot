@@ -21,4 +21,6 @@ class ChildChunk:
     id: str
     parent_id: str
     content: str
+    child_index: int
     metadata: Dict[str, Any] = field(default_factory=dict)
+    
