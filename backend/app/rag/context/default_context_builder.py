@@ -11,11 +11,16 @@ from app.rag.schema.retrieval_result import (
 )
 
 
-class DefaultContextBuilder(BaseContextBuilder):
+class DefaultContextBuilder(
+    BaseContextBuilder,
+):
 
     def build(
+
         self,
+
         retrieval: RetrievalResult,
+
     ) -> ContextResult:
 
         sections = []
@@ -27,26 +32,30 @@ class DefaultContextBuilder(BaseContextBuilder):
             metadata = parent.metadata
 
             header = self._build_header(
-                metadata
+                metadata,
             )
 
             sections.append(
+
                 f"""
 {header}
 
 {parent.content.strip()}
 """.strip()
+
             )
 
             sources.append(
+
                 metadata.get(
                     "source",
                     "Unknown",
                 )
+
             )
 
         context = "\n\n".join(
-            sections
+            sections,
         )
 
         return ContextResult(
@@ -56,62 +65,91 @@ class DefaultContextBuilder(BaseContextBuilder):
             sources=sources,
 
             document_count=len(
-                retrieval.parents
+                retrieval.parents,
             ),
 
         )
 
     def _build_header(
+
         self,
+
         metadata: dict,
+
     ) -> str:
 
         lines = [
+
             "=" * 60,
-        ]
-
-        field_mapping = [
-
-            ("document_type", "DOCUMENT TYPE"),
-
-            ("shipment", "SHIPMENT"),
-
-            ("customer", "CUSTOMER"),
-
-            ("incident_id", "INCIDENT ID"),
-
-            ("email_id", "EMAIL ID"),
-
-            ("vessel", "VESSEL"),
-
-            ("origin", "ORIGIN"),
-
-            ("destination", "DESTINATION"),
-
-            ("priority", "PRIORITY"),
-
-            ("severity", "SEVERITY"),
-
-            ("category", "CATEGORY"),
-
-            ("date", "DATE"),
-
-            ("folder", "FOLDER"),
-
-            ("source", "SOURCE"),
 
         ]
 
-        for key, label in field_mapping:
+        for key, value in sorted(
 
-            value = metadata.get(key)
+            metadata.items()
 
-            if value:
+        ):
 
-                lines.append(
-                    f"{label:<15}: {value}"
+            if value is None:
+
+                continue
+
+            #
+            # Skip dictionaries
+            #
+
+            if isinstance(
+                value,
+                dict,
+            ):
+
+                continue
+
+            #
+            # Lists
+            #
+
+            if isinstance(
+                value,
+                list,
+            ):
+
+                value = ", ".join(
+
+                    map(
+                        str,
+                        value,
+                    )
+
                 )
 
-        lines.append("=" * 60)
+            label = (
 
-        return "\n".join(lines)
+                key
+                .replace(
+                    "_",
+                    " ",
+                )
+                .title()
+
+            )
+
+            lines.append(
+
+                f"{label:<20}: {value}"
+
+            )
+
+        lines.append(
+
+            "=" * 60,
+
+        )
+
+        print(
+            f"Built header for metadata: {metadata}"
+        )
+
+        return "\n".join(
+            lines,
+        )

@@ -22,8 +22,8 @@ from app.rag.context.default_context_builder import (
     DefaultContextBuilder,
 )
 
-from app.rag.prompts.cargo_prompt_builder import (
-    CargoPromptBuilder,
+from app.rag.prompts.default_prompt_builder import (
+    DefaultPromptBuilder,
 )
 
 
@@ -52,7 +52,7 @@ context = DefaultContextBuilder().build(
 )
 
 
-prompt = CargoPromptBuilder().build(
+prompt = DefaultPromptBuilder().build(
     question=QUESTION,
     context=context,
 )

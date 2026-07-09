@@ -48,8 +48,8 @@ from app.rag.llm.groq_llm import (
     GroqLLM,
 )
 
-from app.rag.prompts.cargo_prompt_builder import (
-    CargoPromptBuilder,
+from app.rag.prompts.default_prompt_builder import (
+    DefaultPromptBuilder,
 )
 
 from app.rag.generation.answer_generator import (
@@ -166,7 +166,7 @@ compression_pipeline = ContextCompressionPipeline(
 
 answer_generator = AnswerGenerator(
 
-    prompt_builder=CargoPromptBuilder(),
+    prompt_builder=DefaultPromptBuilder(),
 
     llm=GroqLLM(),
 
