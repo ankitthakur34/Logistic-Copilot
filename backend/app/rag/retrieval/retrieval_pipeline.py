@@ -8,6 +8,10 @@ from app.rag.schema.retrieval_result import (
     RetrievedChild,
 )
 
+from app.rag.metadata.metadata_extraction_pipeline import MetadataExtractionPipeline
+from app.rag.metadata.llm_metadata_extractor import LLMMetadataExtractor
+from app.rag.llm.groq_llm import GroqLLM
+
 
 class RetrievalPipeline:
 
@@ -15,16 +19,21 @@ class RetrievalPipeline:
         self,
         retriever,
         reranker=None,
-        metadata_extractor=None,
+        metadata_pipeline=None,
     ):
 
         self.retriever = retriever
 
         self.reranker = reranker
 
-        self.metadata_extractor = (
-            metadata_extractor
-            or RegexMetadataExtractor()
+        self.metadata_pipeline = (
+            metadata_pipeline
+            or MetadataExtractionPipeline(
+                regex_extractor=RegexMetadataExtractor(),
+                llm_extractor=LLMMetadataExtractor(
+                    llm=GroqLLM(),
+                )
+            )
         )
 
     def run(
@@ -34,9 +43,10 @@ class RetrievalPipeline:
         top_k: int = 5,
     ) -> RetrievalResult:
 
-        metadata = self.metadata_extractor.extract(
-            question,
-        )
+        metadata = self.metadata_pipeline.extract(
+    question,
+    ingestion,
+)
 
         where = MetadataFilter.to_chroma_where(
             metadata,

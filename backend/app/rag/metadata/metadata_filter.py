@@ -1,3 +1,5 @@
+from dataclasses import fields
+
 from app.rag.metadata.metadata_result import MetadataResult
 
 
@@ -8,14 +10,43 @@ class MetadataFilter:
         metadata: MetadataResult,
     ):
 
-        where = {}
+        clauses = []
 
-        if metadata.shipment:
+        for field in fields(MetadataResult):
 
-            where["shipment"] = metadata.shipment
+            value = getattr(metadata, field.name)
 
-        if metadata.email:
+            if value is None:
+                continue
 
-            where["email_id"] = metadata.email
+            clauses.append(
+                {
+                    field.name: value,
+                }
+            )
 
-        return where
+        #
+        # No filters
+        #
+
+        if not clauses:
+
+            return None
+
+        #
+        # Single filter
+        #
+
+        if len(clauses) == 1:
+
+            return clauses[0]
+
+        #
+        # Multiple filters
+        #
+
+        return {
+
+            "$and": clauses,
+
+        }

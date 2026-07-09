@@ -68,7 +68,6 @@ from app.rag.context_compression.context_compression_pipeline import (
     ContextCompressionPipeline,
 )
 
-
 ###############################################################################
 # INGESTION
 ###############################################################################
@@ -80,6 +79,7 @@ ingestion = IngestionPipeline(
     chunker=ParentChildChunker(),
 
 ).run()
+
 
 
 ###############################################################################
@@ -192,7 +192,26 @@ pipeline = AnswerPipeline(
 # QUESTION
 ###############################################################################
 
-question = "Why is shipment SHP0007 delayed?"
+question = "High priority emails for Samsung India"
+
+
+questions = [
+
+    "Why is shipment SHP0007 delayed?",
+
+    "Why is Apple's refrigerated shipment delayed?",
+
+    "Show me the Rotterdam weather issue.",
+
+    "Any update on vessel Maersk Horizon?",
+
+    "Email regarding SHP0010",
+
+    "High priority emails for Samsung India",
+
+    "Incidents at Rotterdam",
+
+]
 
 
 ###############################################################################

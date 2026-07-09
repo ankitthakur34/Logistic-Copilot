@@ -1,5 +1,3 @@
-import re
-
 from app.rag.metadata.base_metadata_extractor import (
     BaseMetadataExtractor,
 )
@@ -8,42 +6,39 @@ from app.rag.metadata.metadata_result import (
     MetadataResult,
 )
 
+from app.rag.metadata.metadata_regex import (
+    PATTERNS,
+)
 
-class RegexMetadataExtractor(
-    BaseMetadataExtractor,
-):
 
-    SHIPMENT_PATTERN = re.compile(
-        r"\bSHP\d+\b",
-        re.IGNORECASE,
-    )
-
-    EMAIL_PATTERN = re.compile(
-        r"\bEMAIL-\d+\b",
-        re.IGNORECASE,
-    )
+class RegexMetadataExtractor(BaseMetadataExtractor):
 
     def extract(
+
         self,
+
         question: str,
+
     ) -> MetadataResult:
 
-        result = MetadataResult()
+        metadata = MetadataResult()
 
-        shipment = self.SHIPMENT_PATTERN.search(
-            question,
-        )
+        for field, pattern in PATTERNS.items():
 
-        if shipment:
+            match = pattern.search(
+                question,
+            )
 
-            result.shipment = shipment.group().upper()
+            if match:
 
-        email = self.EMAIL_PATTERN.search(
-            question,
-        )
+                setattr(
 
-        if email:
+                    metadata,
 
-            result.email = email.group().upper()
+                    field,
 
-        return result
+                    match.group(0),
+
+                )
+
+        return metadata
