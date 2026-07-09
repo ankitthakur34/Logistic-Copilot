@@ -1,7 +1,11 @@
 
 
-from app.rag.metadata.metadata_catalog_builder import MetadataCatalogBuilder
+from app.rag.metadata.metadata_schema_builder import MetadataSchemaBuilder
 from app.rag.metadata.metadata_validator import MetadataValidator
+from app.rag.metadata.metadata_result import MetadataResult
+
+
+
 
 
 class MetadataExtractionPipeline:
@@ -11,6 +15,7 @@ class MetadataExtractionPipeline:
         self,
 
         regex_extractor,
+        dictionary_extractor,
 
         llm_extractor,
 
@@ -18,9 +23,11 @@ class MetadataExtractionPipeline:
 
         self.regex_extractor = regex_extractor
 
+        self.dictionary_extractor = dictionary_extractor
+
         self.llm_extractor = llm_extractor
 
-        self.catalog = None
+        self.schema = None
 
         self.validator = None
 
@@ -42,13 +49,42 @@ class MetadataExtractionPipeline:
                 "Ingestion is required to build MetadataCatalog."
             )
 
-        self.catalog = MetadataCatalogBuilder().build(
+        self.schema = MetadataSchemaBuilder().build(
             ingestion.parent_chunks,
         )
 
         self.validator = MetadataValidator(
-            self.catalog,
+            self.schema,
         )
+    def merge(
+
+    self,
+
+    first: MetadataResult,
+
+    second: MetadataResult,
+
+):
+
+        for field, value in second.to_dict().items():
+
+            if value is None:
+
+                continue
+
+            if getattr(first, field) is None:
+
+                setattr(
+
+                first,
+
+                field,
+
+                value,
+
+            )
+
+        return first    
 
 
     def extract(
@@ -65,9 +101,12 @@ class MetadataExtractionPipeline:
             ingestion,
         )
 
-        metadata = self.regex_extractor.extract(
+        regex_metadata = self.regex_extractor.extract(
             question,
         )
+        dictionary_metadata = self.dictionary_extractor.extract(question,self.schema,)
+
+        metadata = self.merge(regex_metadata,dictionary_metadata)
 
         if metadata.is_empty():
 
@@ -76,6 +115,7 @@ class MetadataExtractionPipeline:
 
             metadata = self.llm_extractor.extract(
                 question,
+                self.schema
             )
 
         else:

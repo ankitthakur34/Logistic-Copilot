@@ -12,9 +12,7 @@ from app.rag.prompts.prompt_result import (
     PromptResult,
 )
 
-from app.rag.metadata.prompts.metadata_extraction_prompt import (
-    SYSTEM_PROMPT,
-)
+from app.rag.metadata.prompts.metadata_extraction_prompt import build_system_prompt
 from app.rag.utils.json_parser import (
     JsonParser,
 )
@@ -37,12 +35,13 @@ class LLMMetadataExtractor(BaseMetadataExtractor):
         self,
 
         question: str,
+        schema,
 
     ) -> MetadataResult:
 
         prompt = PromptResult(
 
-            system_prompt=SYSTEM_PROMPT,
+            system_prompt=build_system_prompt(schema),
 
             user_prompt=question,
 

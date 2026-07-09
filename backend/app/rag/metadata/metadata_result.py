@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 
 @dataclass
@@ -19,6 +19,10 @@ class MetadataResult:
     priority: str | None = None
 
     document_type: str | None = None
+
+    def to_dict(self):
+
+        return asdict(self)
 
     def is_empty(self) -> bool:
 

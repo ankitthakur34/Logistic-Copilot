@@ -10,6 +10,9 @@ from app.rag.metadata.regex_metadata_extractor import (
     RegexMetadataExtractor,
 )
 
+from app.rag.metadata.dictionary_metadata_extractor import DictionaryMetadataExtractor
+
+
 from app.rag.metadata.llm_metadata_extractor import (
     LLMMetadataExtractor,
 )
@@ -39,6 +42,8 @@ ingestion = IngestionPipeline(
 pipeline = MetadataExtractionPipeline(
 
     regex_extractor=RegexMetadataExtractor(),
+
+    dictionary_extractor=DictionaryMetadataExtractor(),
 
     llm_extractor=LLMMetadataExtractor(
 

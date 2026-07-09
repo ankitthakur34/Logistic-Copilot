@@ -4,8 +4,8 @@ from app.rag.metadata.metadata_result import (
     MetadataResult,
 )
 
-from app.rag.metadata.metadata_catalog import (
-    MetadataCatalog,
+from app.rag.metadata.metadata_schema import (
+    MetadataSchema,
 )
 
 
@@ -15,11 +15,11 @@ class MetadataValidator:
 
         self,
 
-        catalog: MetadataCatalog,
+        schema: MetadataSchema,
 
     ):
 
-        self.catalog = catalog
+        self.schema = schema
 
     def validate(
 
@@ -29,47 +29,41 @@ class MetadataValidator:
 
     ) -> MetadataResult:
 
-        #
-        # Iterate over every field in MetadataResult
-        #
-
         for field in fields(MetadataResult):
 
-            name = field.name
+            field_name = field.name
 
             #
-            # Skip helper methods/fields if any are added later
+            # Skip helper methods
             #
-
-            if name == "is_empty":
-                continue
 
             value = getattr(
 
                 metadata,
 
-                name,
+                field_name,
 
             )
 
-            #
-            # Nothing to validate
-            #
-
             if value is None:
+
                 continue
 
             #
-            # Field isn't filterable
+            # Unknown field
             #
 
-            if name not in self.catalog.allowed_fields:
+            if not self.schema.has_field(
+
+                field_name,
+
+            ):
 
                 setattr(
 
                     metadata,
 
-                    name,
+                    field_name,
 
                     None,
 
@@ -78,27 +72,22 @@ class MetadataValidator:
                 continue
 
             #
-            # No value catalog -> allow
+            # Unknown value
             #
 
-            allowed = self.catalog.allowed_values.get(
-                name,
+            allowed = self.schema.allowed_values(
+
+                field_name,
+
             )
 
-            if not allowed:
-                continue
-
-            #
-            # Value doesn't exist in our documents
-            #
-
-            if value not in allowed:
+            if allowed and value not in allowed:
 
                 setattr(
 
                     metadata,
 
-                    name,
+                    field_name,
 
                     None,
 
