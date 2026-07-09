@@ -192,7 +192,7 @@ pipeline = AnswerPipeline(
 # QUESTION
 ###############################################################################
 
-question = "High priority emails for Samsung India"
+question = "Any updates on MV Maersk Horizon?"
 
 
 questions = [

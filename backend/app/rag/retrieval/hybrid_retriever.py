@@ -47,13 +47,13 @@ class HybridRetriever(BaseRetriever):
 
         )
 
-        print("\nDENSE IDS")
-        for i in dense_result.ids:
-            print(i)
+        # print("\nDENSE IDS")
+        # for i in dense_result.ids:
+        #     print(i)
 
-        print("\nBM25 IDS")
-        for i in sparse_result.ids:
-                print(i)
+        # print("\nBM25 IDS")
+        # for i in sparse_result.ids:
+        #         print(i)
 
         return self.fusion.fuse(
 
