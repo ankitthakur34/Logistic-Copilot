@@ -1,51 +1,59 @@
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
 class MetadataResult:
 
-    shipment: str | None = None
+    values: dict = field(
+        default_factory=dict,
+    )
 
-    email_id: str | None = None
+    def get(
 
-    customer: str | None = None
+        self,
 
-    port: str | None = None
+        key,
 
-    vessel: str | None = None
+        default=None,
 
-    date: str | None = None
+    ):
 
-    priority: str | None = None
-
-    document_type: str | None = None
-
-    def to_dict(self):
-
-        return asdict(self)
-
-    def is_empty(self) -> bool:
-
-        return not any(
-
-            [
-
-                self.shipment,
-
-                self.email_id,
-
-                self.customer,
-
-                self.port,
-
-                self.vessel,
-
-                self.date,
-
-                self.priority,
-
-                self.document_type,
-
-            ]
-
+        return self.values.get(
+            key,
+            default,
         )
+
+    def set(
+
+        self,
+
+        key,
+
+        value,
+
+    ):
+
+        if value is None:
+            return
+
+        self.values[key] = value
+
+    def to_dict(
+
+        self,
+
+    ):
+
+        return dict(
+            self.values,
+        )
+
+    def is_empty(
+
+        self,
+
+    ):
+
+        return len(
+            self.values,
+        ) == 0

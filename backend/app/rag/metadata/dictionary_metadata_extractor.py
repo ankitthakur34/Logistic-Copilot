@@ -11,7 +11,9 @@ from app.rag.metadata.metadata_schema import (
 )
 
 
-class DictionaryMetadataExtractor(BaseMetadataExtractor):
+class DictionaryMetadataExtractor(
+    BaseMetadataExtractor,
+):
 
     def extract(
 
@@ -42,7 +44,7 @@ class DictionaryMetadataExtractor(BaseMetadataExtractor):
                 continue
 
             #
-            # Longest value first
+            # Longest values first
             #
 
             sorted_values = sorted(
@@ -59,9 +61,7 @@ class DictionaryMetadataExtractor(BaseMetadataExtractor):
 
                 if value.lower() in question_lower:
 
-                    setattr(
-
-                        metadata,
+                    metadata.set(
 
                         field_name,
 

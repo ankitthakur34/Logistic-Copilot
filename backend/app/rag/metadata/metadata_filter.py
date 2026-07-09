@@ -1,28 +1,31 @@
-from dataclasses import fields
-
-from app.rag.metadata.metadata_result import MetadataResult
+from app.rag.metadata.metadata_result import (
+    MetadataResult,
+)
 
 
 class MetadataFilter:
 
     @staticmethod
     def to_chroma_where(
+
         metadata: MetadataResult,
+
     ):
 
         clauses = []
 
-        for field in fields(MetadataResult):
-
-            value = getattr(metadata, field.name)
+        for field, value in metadata.to_dict().items():
 
             if value is None:
+
                 continue
 
             clauses.append(
+
                 {
-                    field.name: value,
+                    field: value,
                 }
+
             )
 
         #

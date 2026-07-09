@@ -192,7 +192,7 @@ pipeline = AnswerPipeline(
 # QUESTION
 ###############################################################################
 
-question = "Any updates on MV Maersk Horizon?"
+question = "Why is shipment SHP0007 delayed?"
 
 
 questions = [

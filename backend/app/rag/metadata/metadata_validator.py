@@ -1,5 +1,3 @@
-from dataclasses import fields
-
 from app.rag.metadata.metadata_result import (
     MetadataResult,
 )
@@ -29,21 +27,17 @@ class MetadataValidator:
 
     ) -> MetadataResult:
 
-        for field in fields(MetadataResult):
+        validated = MetadataResult()
 
-            field_name = field.name
+        #
+        # Iterate over extracted metadata
+        #
+
+        for field_name, value in metadata.to_dict().items():
 
             #
-            # Skip helper methods
+            # Skip empty values
             #
-
-            value = getattr(
-
-                metadata,
-
-                field_name,
-
-            )
 
             if value is None:
 
@@ -59,38 +53,41 @@ class MetadataValidator:
 
             ):
 
-                setattr(
-
-                    metadata,
-
-                    field_name,
-
-                    None,
-
-                )
-
                 continue
 
             #
-            # Unknown value
+            # Allowed values
             #
 
-            allowed = self.schema.allowed_values(
+            allowed_values = self.schema.allowed_values(
 
                 field_name,
 
             )
 
-            if allowed and value not in allowed:
+            #
+            # If catalog exists,
+            # validate against it.
+            #
 
-                setattr(
+            if (
 
-                    metadata,
+                allowed_values
 
-                    field_name,
+                and
 
-                    None,
+                value not in allowed_values
 
-                )
+            ):
 
-        return metadata
+                continue
+
+            validated.set(
+
+                field_name,
+
+                value,
+
+            )
+
+        return validated

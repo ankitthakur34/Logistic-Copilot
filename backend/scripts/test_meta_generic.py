@@ -1,27 +1,35 @@
-from app.rag.metadata.metadata_schema_builder import MetadataSchemaBuilder
-from app.rag.ingestion.ingest_pipeline import IngestionPipeline
-from app.rag.chunking.parent_child_chunker import ParentChildChunker
-from app.rag.loader.markdown_loader import MarkdownLoader
-
-ingestion = IngestionPipeline(
-
-    loader=MarkdownLoader("data/rag"),
-
-    chunker=ParentChildChunker(),
-
-).run()
-
-schema = MetadataSchemaBuilder().build(
-    ingestion.parent_chunks,
+from app.rag.metadata.metadata_filter import (
+    MetadataFilter,
 )
 
-print(schema.fields)
+from app.rag.metadata.metadata_result import (
+    MetadataResult,
+)
 
-print(schema.has_field("customer"))
+metadata = MetadataResult()
 
-print(schema.has_field("abc"))
+metadata.set(
+    "customer",
+    "Samsung India",
+)
 
-print(schema.allowed_values("shipment"))
-print(schema.allowed_values("customer"))
+metadata.set(
+    "priority",
+    "High",
+)
 
-print(schema.allowed_values("xyz"))
+print()
+
+print(metadata)
+
+print()
+
+print(
+
+    MetadataFilter.to_chroma_where(
+
+        metadata,
+
+    )
+
+)

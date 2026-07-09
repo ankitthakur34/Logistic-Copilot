@@ -11,7 +11,9 @@ from app.rag.metadata.metadata_regex import (
 )
 
 
-class RegexMetadataExtractor(BaseMetadataExtractor):
+class RegexMetadataExtractor(
+    BaseMetadataExtractor,
+):
 
     def extract(
 
@@ -31,9 +33,7 @@ class RegexMetadataExtractor(BaseMetadataExtractor):
 
             if match:
 
-                setattr(
-
-                    metadata,
+                metadata.set(
 
                     field,
 

@@ -1,5 +1,3 @@
-import json
-
 from app.rag.metadata.base_metadata_extractor import (
     BaseMetadataExtractor,
 )
@@ -12,13 +10,18 @@ from app.rag.prompts.prompt_result import (
     PromptResult,
 )
 
-from app.rag.metadata.prompts.metadata_extraction_prompt import build_system_prompt
+from app.rag.metadata.prompts.metadata_extraction_prompt import (
+    build_system_prompt,
+)
+
 from app.rag.utils.json_parser import (
     JsonParser,
 )
 
 
-class LLMMetadataExtractor(BaseMetadataExtractor):
+class LLMMetadataExtractor(
+    BaseMetadataExtractor,
+):
 
     def __init__(
 
@@ -35,13 +38,16 @@ class LLMMetadataExtractor(BaseMetadataExtractor):
         self,
 
         question: str,
+
         schema,
 
     ) -> MetadataResult:
 
         prompt = PromptResult(
 
-            system_prompt=build_system_prompt(schema),
+            system_prompt=build_system_prompt(
+                schema,
+            ),
 
             user_prompt=question,
 
@@ -59,30 +65,32 @@ class LLMMetadataExtractor(BaseMetadataExtractor):
 
             data = JsonParser.parse(
 
-        response.answer,
+                response.answer,
 
-    )
+            )
 
         except Exception:
 
             return MetadataResult()
 
-        return MetadataResult(
+        metadata = MetadataResult()
 
-            shipment=data.get("shipment"),
+        #
+        # Dynamically store fields
+        #
 
-            email_id=data.get("email_id"),
+        for field, value in data.items():
 
-            customer=data.get("customer"),
+            if value is None:
 
-            port=data.get("port"),
+                continue
 
-            vessel=data.get("vessel"),
+            metadata.set(
 
-            date=data.get("date"),
+                field,
 
-            priority=data.get("priority"),
+                value,
 
-            document_type=data.get("document_type"),
+            )
 
-        )
+        return metadata

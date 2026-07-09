@@ -1,11 +1,14 @@
+from app.rag.metadata.metadata_schema_builder import (
+    MetadataSchemaBuilder,
+)
 
+from app.rag.metadata.metadata_validator import (
+    MetadataValidator,
+)
 
-from app.rag.metadata.metadata_schema_builder import MetadataSchemaBuilder
-from app.rag.metadata.metadata_validator import MetadataValidator
-from app.rag.metadata.metadata_result import MetadataResult
-
-
-
+from app.rag.metadata.metadata_result import (
+    MetadataResult,
+)
 
 
 class MetadataExtractionPipeline:
@@ -15,6 +18,7 @@ class MetadataExtractionPipeline:
         self,
 
         regex_extractor,
+
         dictionary_extractor,
 
         llm_extractor,
@@ -31,7 +35,6 @@ class MetadataExtractionPipeline:
 
         self.validator = None
 
-
     def prepare(
 
         self,
@@ -40,31 +43,48 @@ class MetadataExtractionPipeline:
 
     ):
 
+        #
+        # Already prepared
+        #
+
         if self.validator is not None:
+
             return
 
         if ingestion is None:
 
             raise ValueError(
-                "Ingestion is required to build MetadataCatalog."
+
+                "Ingestion is required to build metadata schema."
+
             )
 
         self.schema = MetadataSchemaBuilder().build(
+
             ingestion.parent_chunks,
+
         )
 
         self.validator = MetadataValidator(
+
             self.schema,
+
         )
+
     def merge(
 
-    self,
+        self,
 
-    first: MetadataResult,
+        first: MetadataResult,
 
-    second: MetadataResult,
+        second: MetadataResult,
 
-):
+    ) -> MetadataResult:
+
+        #
+        # Add values from second
+        # only if first doesn't have them.
+        #
 
         for field, value in second.to_dict().items():
 
@@ -72,60 +92,107 @@ class MetadataExtractionPipeline:
 
                 continue
 
-            if getattr(first, field) is None:
+            if first.get(field) is None:
 
-                setattr(
+                first.set(
 
-                first,
+                    field,
 
-                field,
+                    value,
 
-                value,
+                )
 
-            )
-
-        return first    
-
+        return first
 
     def extract(
 
         self,
 
-        question,
+        question: str,
 
         ingestion,
 
-    ):
+    ) -> MetadataResult:
 
         self.prepare(
+
             ingestion,
+
         )
 
-        regex_metadata = self.regex_extractor.extract(
-            question,
-        )
-        dictionary_metadata = self.dictionary_extractor.extract(question,self.schema,)
+        #
+        # Regex extraction
+        #
 
-        metadata = self.merge(regex_metadata,dictionary_metadata)
+        regex_metadata = (
+
+            self.regex_extractor.extract(
+
+                question,
+
+            )
+
+        )
+
+        #
+        # Dictionary extraction
+        #
+
+        dictionary_metadata = (
+
+            self.dictionary_extractor.extract(
+
+                question,
+
+                self.schema,
+
+            )
+
+        )
+
+        #
+        # Merge both
+        #
+
+        metadata = self.merge(
+
+            regex_metadata,
+
+            dictionary_metadata,
+
+        )
+
+        #
+        # Use LLM only if needed
+        #
 
         if metadata.is_empty():
 
             print()
             print(">>>> USING LLM <<<<")
 
-            metadata = self.llm_extractor.extract(
-                question,
-                self.schema
+            metadata = (
+
+                self.llm_extractor.extract(
+
+                    question,
+
+                    self.schema,
+
+                )
+
             )
 
         else:
 
             print()
-            print(">>>> USING REGEX <<<<")
+            print(">>>> USING REGEX/DICTIONARY <<<<")
 
         print(metadata)
         print()
 
         return self.validator.validate(
+
             metadata,
+
         )
