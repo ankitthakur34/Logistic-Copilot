@@ -192,7 +192,7 @@ pipeline = AnswerPipeline(
 # QUESTION
 ###############################################################################
 
-question = "Why is shipment SHP0007 delayed?"
+question = "Hello"
 
 
 questions = [

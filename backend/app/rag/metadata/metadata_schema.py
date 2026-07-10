@@ -1,43 +1,93 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass
 class MetadataSchema:
 
     #
-    # Metadata fields discovered
+    # All metadata fields
     #
 
-    fields: set[str] = field(default_factory=set)
+    fields: set[str]
 
     #
-    # All discovered values
+    # field -> values
     #
 
-    values: dict[str, set[str]] = field(default_factory=dict)
+    values: dict[str, set[str]]
+
+    #
+    # value -> fields
+    #
+
+    value_to_fields: dict[str, set[str]]
+
+    #
+    # lowercase value -> original value
+    #
+
+    normalized_values: dict[str, str]
+
+    #
+    # fields that can be used for filtering
+    #
+
+    queryable_fields: set[str]
 
     def has_field(
 
         self,
 
-        field_name: str,
+        field: str,
 
     ) -> bool:
 
-        return field_name in self.fields
+        return field in self.fields
 
     def allowed_values(
 
         self,
 
-        field_name: str,
+        field: str,
 
     ) -> set[str]:
 
         return self.values.get(
 
-            field_name,
+            field,
 
             set(),
+
+        )
+
+    def candidate_fields(
+
+        self,
+
+        value: str,
+
+    ) -> set[str]:
+
+        return self.value_to_fields.get(
+
+            value.lower(),
+
+            set(),
+
+        )
+
+    def original_value(
+
+        self,
+
+        value: str,
+
+    ) -> str:
+
+        return self.normalized_values.get(
+
+            value.lower(),
+
+            value,
 
         )

@@ -5,6 +5,26 @@ from app.rag.metadata.metadata_schema import (
 )
 
 
+NON_QUERY_FIELDS = {
+
+     "path",
+    "source",
+    "folder",
+    "version",
+
+    "tags",
+
+    "title",
+
+    "subject",
+
+    "from",
+
+    "to",
+
+}
+
+
 class MetadataSchemaBuilder:
 
     def build(
@@ -15,17 +35,11 @@ class MetadataSchemaBuilder:
 
     ) -> MetadataSchema:
 
-        #
-        # Every metadata field discovered
-        #
+        catalog = defaultdict(set)
 
-        fields = set()
+        value_to_fields = defaultdict(set)
 
-        #
-        # Every value discovered for every field
-        #
-
-        values = defaultdict(set)
+        normalized_values = {}
 
         for parent in parent_chunks:
 
@@ -33,32 +47,35 @@ class MetadataSchemaBuilder:
 
             for key, value in metadata.items():
 
-                #
-                # Skip None
-                #
-
                 if value is None:
-
                     continue
 
                 #
-                # Register discovered field
-                #
-
-                fields.add(key)
-
-                #
-                # Lists
+                # List values
                 #
 
                 if isinstance(value, list):
 
                     for item in value:
 
-                        values[key].add(str(item))
+                        value_str = str(item)
+
+                        catalog[key].add(
+                            value_str,
+                        )
+
+                        value_to_fields[
+                            value_str.lower()
+                        ].add(
+                            key,
+                        )
+
+                        normalized_values[
+                            value_str.lower()
+                        ] = value_str
 
                 #
-                # Ignore nested dictionaries
+                # Ignore nested dicts
                 #
 
                 elif isinstance(value, dict):
@@ -66,17 +83,59 @@ class MetadataSchemaBuilder:
                     continue
 
                 #
-                # Everything else
+                # Normal values
                 #
 
                 else:
 
-                    values[key].add(str(value))
+                    value_str = str(value)
+
+                    catalog[key].add(
+                        value_str,
+                    )
+
+                    value_to_fields[
+                        value_str.lower()
+                    ].add(
+                        key,
+                    )
+
+                    normalized_values[
+                        value_str.lower()
+                    ] = value_str
+
+        #
+        # Build queryable fields
+        #
+
+        queryable_fields = set()
+
+        for field in catalog.keys():
+
+            if field.lower() in NON_QUERY_FIELDS:
+
+                continue
+
+            queryable_fields.add(
+                field,
+            )
 
         return MetadataSchema(
 
-            fields=fields,
+            fields=set(
+                catalog.keys(),
+            ),
 
-            values=dict(values),
+            values=dict(
+                catalog,
+            ),
+
+            value_to_fields=dict(
+                value_to_fields,
+            ),
+
+            normalized_values=normalized_values,
+
+            queryable_fields=queryable_fields,
 
         )

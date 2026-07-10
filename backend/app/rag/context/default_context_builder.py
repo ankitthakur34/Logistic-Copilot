@@ -10,9 +10,13 @@ from app.rag.schema.retrieval_result import (
     RetrievalResult,
 )
 
+from app.rag.context.context_config import (
+    NON_CONTEXT_FIELDS,
+)
+
 
 class DefaultContextBuilder(
-    BaseContextBuilder,
+    BaseContextBuilder
 ):
 
     def build(
@@ -32,7 +36,7 @@ class DefaultContextBuilder(
             metadata = parent.metadata
 
             header = self._build_header(
-                metadata,
+                metadata
             )
 
             sections.append(
@@ -45,17 +49,18 @@ class DefaultContextBuilder(
 
             )
 
-            sources.append(
-
-                metadata.get(
-                    "source",
-                    "Unknown",
-                )
-
+            source = metadata.get(
+                "source"
             )
 
+            if source:
+
+                sources.append(
+                    source
+                )
+
         context = "\n\n".join(
-            sections,
+            sections
         )
 
         return ContextResult(
@@ -65,7 +70,7 @@ class DefaultContextBuilder(
             sources=sources,
 
             document_count=len(
-                retrieval.parents,
+                retrieval.parents
             ),
 
         )
@@ -84,24 +89,17 @@ class DefaultContextBuilder(
 
         ]
 
-        for key, value in sorted(
+        for key, value in metadata.items():
 
-            metadata.items()
+            #
+            # Ignore internal metadata
+            #
 
-        ):
-
-            if value is None:
+            if key.lower() in NON_CONTEXT_FIELDS:
 
                 continue
 
-            #
-            # Skip dictionaries
-            #
-
-            if isinstance(
-                value,
-                dict,
-            ):
+            if value is None:
 
                 continue
 
@@ -115,23 +113,17 @@ class DefaultContextBuilder(
             ):
 
                 value = ", ".join(
-
-                    map(
-                        str,
-                        value,
-                    )
-
+                    str(v)
+                    for v in value
                 )
 
             label = (
 
-                key
-                .replace(
+                key.replace(
                     "_",
                     " ",
                 )
                 .title()
-
             )
 
             lines.append(
@@ -141,15 +133,9 @@ class DefaultContextBuilder(
             )
 
         lines.append(
-
-            "=" * 60,
-
-        )
-
-        print(
-            f"Built header for metadata: {metadata}"
+            "=" * 60
         )
 
         return "\n".join(
-            lines,
+            lines
         )
