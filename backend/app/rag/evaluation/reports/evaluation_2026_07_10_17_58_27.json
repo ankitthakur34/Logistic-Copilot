@@ -1,0 +1,76 @@
+{
+    "average_scores": {
+        "Faithfulness": 0.963,
+        "Answer Relevancy": 1.0
+    },
+    "queries": [
+        {
+            "question": "Why is shipment SHP0007 delayed?",
+            "expected_answer": "Shipment SHP0007 was delayed due to a power interruption that caused abnormal reefer temperatures.",
+            "actual_answer": "Shipment SHP0007 is delayed due to a power interruption that occurred during container transfer, causing a temporary temperature deviation in the refrigerated container.",
+            "metrics": [
+                {
+                    "name": "Faithfulness",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions found, indicating a perfect alignment between the actual output and the retrieval context, which is absolutely fantastic!",
+                    "success": true
+                },
+                {
+                    "name": "Answer Relevancy",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the output perfectly addresses the input question about the shipment delay, with no irrelevant statements to detract from its relevance.",
+                    "success": true
+                }
+            ],
+            "sources": [
+                "incident_shp0007_temperature.md",
+                "email_005_shp0007_customer.md",
+                "email_006_shp0007_reefer.md"
+            ]
+        },
+        {
+            "question": "Any update on vessel Maersk Horizon?",
+            "expected_answer": "MV Maersk Horizon was delayed because of severe weather near Rotterdam and unloading operations were suspended.",
+            "actual_answer": "The vessel MV Maersk Horizon, carrying shipment SHP0001, experienced a delay due to severe weather conditions in the North Sea. The current status is that the weather conditions are improving. The ETA was delayed by approximately 48 hours, but no cargo damage was reported, and crew safety was maintained.",
+            "metrics": [
+                {
+                    "name": "Faithfulness",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions found, indicating a perfect alignment between the actual output and the retrieval context, which is absolutely fantastic!",
+                    "success": true
+                },
+                {
+                    "name": "Answer Relevancy",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the output perfectly addresses the query about the vessel Maersk Horizon without any irrelevant statements, demonstrating a strong relevance to the input.",
+                    "success": true
+                }
+            ],
+            "sources": [
+                "incident_shp0001_weather.md"
+            ]
+        },
+        {
+            "question": "High priority emails for Samsung India",
+            "expected_answer": "EMAIL-001 is a high priority email regarding Shipment SHP0001.",
+            "actual_answer": "* Email ID: EMAIL-001\n* Subject: Delay Notification for Shipment SHP0001\n* Date: 2026-07-04\n* Priority: High\n* Short summary: Notification of a 48-hour delay for Shipment SHP0001 due to severe weather conditions near the Port of Rotterdam, with a revised ETA of 20 July 2026.",
+            "metrics": [
+                {
+                    "name": "Faithfulness",
+                    "score": 0.8888888888888888,
+                    "reason": "The score is 0.89 because the actual output incorrectly states the shipment has been delayed by 48 hours, whereas the retrieval context specifies an estimated delay of approximately 48 hours, resulting in a minor discrepancy.",
+                    "success": true
+                },
+                {
+                    "name": "Answer Relevancy",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the output perfectly addresses the topic of high priority emails for Samsung India, with no irrelevant statements found.",
+                    "success": true
+                }
+            ],
+            "sources": [
+                "email_001_shp0001_customer_delay.md"
+            ]
+        }
+    ]
+}

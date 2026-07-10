@@ -17,3 +17,5 @@ pyyaml
 groq
 rank-bm25
 rapidfuzz
+pytest
+deepeval

@@ -1,0 +1,114 @@
+{
+    "average_scores": {
+        "Faithfulness": 0.963,
+        "Answer Relevancy": 1.0,
+        "Contextual Precision": 1.0,
+        "Contextual Recall": 1.0
+    },
+    "queries": [
+        {
+            "question": "Why is shipment SHP0007 delayed?",
+            "expected_answer": "Shipment SHP0007 was delayed due to a power interruption that caused abnormal reefer temperatures.",
+            "actual_answer": "Shipment SHP0007 is delayed due to a power interruption that occurred during container transfer, which caused a temporary temperature deviation inside the refrigerated container.",
+            "metrics": [
+                {
+                    "name": "Faithfulness",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions found, indicating a perfect alignment between the actual output and the retrieval context, which is absolutely fantastic!",
+                    "success": true
+                },
+                {
+                    "name": "Answer Relevancy",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the output perfectly addresses the input question about the shipment delay, with no irrelevant statements to detract from its relevance.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Precision",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because all relevant nodes in the retrieval contexts, such as the first node which states 'shp0007 is delayed because Power interruption occurred during container transfer' and 'abnormal readings inside refrigerated container', and the second node which mentions 'temporary temperature deviation' detected related to 'Shipment SHP0007', are ranked higher than irrelevant nodes, like the third node, which says 'Shipment may continue without restrictions' and does not provide any information about the delay, thus perfectly ranking relevant information above irrelevant ones.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Recall",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the expected output sentence can be directly attributed to nodes in retrieval context, specifically the 1st and 2nd nodes, which provide clear information about the shipment delay and its cause, resulting in a perfect recall score.",
+                    "success": true
+                }
+            ],
+            "sources": [
+                "incident_shp0007_temperature.md",
+                "email_005_shp0007_customer.md",
+                "email_006_shp0007_reefer.md"
+            ]
+        },
+        {
+            "question": "Any update on vessel Maersk Horizon?",
+            "expected_answer": "MV Maersk Horizon was delayed because of severe weather near Rotterdam and unloading operations were suspended.",
+            "actual_answer": "The vessel MV Maersk Horizon, carrying shipment SHP0001, experienced a delay due to severe weather conditions in the North Sea. The current status is that the weather conditions are improving. The ETA has been delayed by approximately 48 hours.",
+            "metrics": [
+                {
+                    "name": "Faithfulness",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions found, indicating a perfect alignment between the actual output and the retrieval context, which is absolutely fantastic!",
+                    "success": true
+                },
+                {
+                    "name": "Answer Relevancy",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the output perfectly addresses the input query about the vessel Maersk Horizon, providing a relevant and accurate response without any irrelevant statements.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Precision",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because all relevant nodes, such as the first node which mentions 'severe weather conditions in the North Sea' and 'vessel speed reduced', and the second node which states 'Port suspended unloading operations', are ranked higher than irrelevant nodes, like the third node at rank 3, which provides additional details but does not directly address the question, the fourth node at rank 4, which shows actions taken in response to the delay but lacks specific information about the vessel, and the fifth node at rank 5, which offers an update on the weather conditions but does not directly relate to the vessel's status, thus perfectly ranking relevant nodes in retrieval contexts above irrelevant ones.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Recall",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the entire expected output, specifically sentence 1, can be directly attributed to node 1 in the retrieval context, which mentions severe weather conditions and suspended unloading operations, resulting in a perfect match.",
+                    "success": true
+                }
+            ],
+            "sources": [
+                "incident_shp0001_weather.md"
+            ]
+        },
+        {
+            "question": "High priority emails for Samsung India",
+            "expected_answer": "EMAIL-001 is a high priority email regarding Shipment SHP0001.",
+            "actual_answer": "* Email ID: EMAIL-001\n* Subject: Delay Notification for Shipment SHP0001\n* Date: 2026-07-04\n* Priority: High\n* Short summary: Notification of a 48-hour delay for Shipment SHP0001 due to severe weather conditions near the Port of Rotterdam, with a revised ETA of 20 July 2026.",
+            "metrics": [
+                {
+                    "name": "Faithfulness",
+                    "score": 0.8888888888888888,
+                    "reason": "The score is 0.89 because the actual output slightly misinterprets the retrieval context by implying a precise 48-hour delay, whereas the context only provides an approximate estimate, resulting in a minor discrepancy.",
+                    "success": true
+                },
+                {
+                    "name": "Answer Relevancy",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the output perfectly addresses the topic of high priority emails for Samsung India, with no irrelevant statements found.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Precision",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the retrieval context, a node at rank 1, directly addresses a shipment issue with relevant details such as 'Estimated delay is approximately 48 hours' and 'Revised ETA 20 July 2026', making it perfectly relevant to determining high priority emails for Samsung India.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Recall",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the expected output perfectly matches the information in the node(s) in retrieval context, specifically the 1st node, which confirms the high priority of EMAIL-001 regarding Shipment SHP0001.",
+                    "success": true
+                }
+            ],
+            "sources": [
+                "email_001_shp0001_customer_delay.md"
+            ]
+        }
+    ]
+}

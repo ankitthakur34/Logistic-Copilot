@@ -1,0 +1,41 @@
+[
+    {
+        "question":
+            "Why is shipment SHP0007 delayed?",
+
+        "expected_answer":
+            "Shipment SHP0007 was delayed due to a power interruption that caused abnormal reefer temperatures.",
+
+        "expected_sources":
+        [
+            "incident_shp0007_temperature.md"
+        ]
+    },
+
+    {
+        "question":
+            "Any update on vessel Maersk Horizon?",
+
+        "expected_answer":
+            "MV Maersk Horizon was delayed because of severe weather near Rotterdam and unloading operations were suspended.",
+
+        "expected_sources":
+        [
+            "email_001_shp0001_customer_delay.md",
+            "operations_meeting_2026_07_04.md"
+        ]
+    },
+
+    {
+        "question":
+            "High priority emails for Samsung India",
+
+        "expected_answer":
+            "EMAIL-001 is a high priority email regarding Shipment SHP0001.",
+
+        "expected_sources":
+        [
+            "email_001_shp0001_customer_delay.md"
+        ]
+    }
+]
