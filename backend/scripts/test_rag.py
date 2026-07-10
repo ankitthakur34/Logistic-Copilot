@@ -67,6 +67,8 @@ from app.rag.context_compression.child_context_compressor import (
 from app.rag.context_compression.context_compression_pipeline import (
     ContextCompressionPipeline,
 )
+from app.rag.decomposition.decomposition_pipeline import DecompositionPipeline
+from app.rag.decomposition.llm_query_decomposer import LLMQueryDecomposer
 
 ###############################################################################
 # INGESTION
@@ -141,11 +143,26 @@ multi_query_retriever = MultiQueryRetriever(
 # RETRIEVAL PIPELINE
 ###############################################################################
 
+
 retrieval_pipeline = RetrievalPipeline(
 
     retriever=multi_query_retriever,
 
     reranker=CrossEncoderReranker(),
+
+     decomposition_pipeline=(
+
+        DecompositionPipeline(
+
+            decomposer=LLMQueryDecomposer(
+
+                llm=GroqLLM(),
+
+            )
+
+        )
+
+    )
 
 )
 
@@ -192,7 +209,7 @@ pipeline = AnswerPipeline(
 # QUESTION
 ###############################################################################
 
-question = "Hello"
+question = "Why is shipment SHP0007 delayed and Any update on vessel Maersk Horizon? "
 
 
 questions = [

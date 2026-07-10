@@ -1,4 +1,7 @@
-from app.rag.metadata.metadata_filter import MetadataFilter
+from app.rag.metadata.metadata_filter import (
+    MetadataFilter,
+)
+
 from app.rag.metadata.regex_metadata_extractor import (
     RegexMetadataExtractor,
 )
@@ -8,68 +11,248 @@ from app.rag.schema.retrieval_result import (
     RetrievedChild,
 )
 
-from app.rag.metadata.metadata_extraction_pipeline import MetadataExtractionPipeline
-from app.rag.metadata.llm_metadata_extractor import LLMMetadataExtractor
-from app.rag.llm.groq_llm import GroqLLM
-from app.rag.metadata.dictionary_metadata_extractor import DictionaryMetadataExtractor
+from app.rag.metadata.metadata_extraction_pipeline import (
+    MetadataExtractionPipeline,
+)
+
+from app.rag.metadata.llm_metadata_extractor import (
+    LLMMetadataExtractor,
+)
+
+from app.rag.llm.groq_llm import (
+    GroqLLM,
+)
+
+from app.rag.metadata.dictionary_metadata_extractor import (
+    DictionaryMetadataExtractor,
+)
 
 
 class RetrievalPipeline:
 
     def __init__(
+
         self,
+
         retriever,
+
         reranker=None,
+
         metadata_pipeline=None,
+
+        decomposition_pipeline=None,
+
     ):
 
         self.retriever = retriever
 
         self.reranker = reranker
 
+        self.decomposition_pipeline = (
+            decomposition_pipeline
+        )
+
         self.metadata_pipeline = (
+
             metadata_pipeline
+
             or MetadataExtractionPipeline(
+
                 regex_extractor=RegexMetadataExtractor(),
+
                 dictionary_extractor=DictionaryMetadataExtractor(),
+
                 llm_extractor=LLMMetadataExtractor(
+
                     llm=GroqLLM(),
+
                 )
+
             )
+
         )
 
     def run(
+
         self,
+
         question: str,
+
         ingestion,
+
         top_k: int = 5,
+
     ) -> RetrievalResult:
 
-        metadata = self.metadata_pipeline.extract(
-    question,
-    ingestion,
-)
+        #
+        # Query decomposition
+        #
 
-        where = MetadataFilter.to_chroma_where(
-            metadata,
+        questions = [
+            question,
+        ]
+
+        if self.decomposition_pipeline:
+
+            questions = (
+
+                self.decomposition_pipeline.run(
+                    question
+                )
+
+            )
+
+        print()
+        print("=" * 80)
+        print("DECOMPOSED QUESTIONS")
+        print("=" * 80)
+
+        for q in questions:
+
+            print(q)
+
+        print()
+
+        #
+        # Retrieve for every sub-question
+        #
+
+        all_ids = []
+
+        all_scores = []
+
+        for sub_question in questions:
+
+            metadata = (
+
+                self.metadata_pipeline.extract(
+
+                    sub_question,
+
+                    ingestion,
+
+                )
+
+            )
+
+            where = (
+
+                MetadataFilter.to_chroma_where(
+                    metadata,
+                )
+
+            )
+
+            print()
+            print("=" * 80)
+            print("SUB QUESTION")
+            print("=" * 80)
+
+            print(sub_question)
+
+            print()
+
+            print("WHERE FILTER")
+
+            print(where)
+
+            print()
+
+            candidate_count = max(
+
+                top_k * 4,
+
+                20,
+
+            )
+
+            result = self.retriever.retrieve(
+
+                question=sub_question,
+
+                where=where,
+
+                top_k=candidate_count,
+
+            )
+
+            all_ids.extend(
+                result.ids
+            )
+
+            all_scores.extend(
+                result.scores
+            )
+
+        #
+        # Merge duplicate children
+        #
+
+        merged = {}
+
+        for idx, child_id in enumerate(
+            all_ids
+        ):
+
+            score = all_scores[idx]
+
+            if child_id not in merged:
+
+                merged[
+                    child_id
+                ] = score
+
+            else:
+
+                merged[
+                    child_id
+                ] = max(
+
+                    merged[
+                        child_id
+                    ],
+
+                    score,
+
+                )
+
+        merged = sorted(
+
+            merged.items(),
+
+            key=lambda x: x[1],
+
+            reverse=True,
+
         )
 
-        candidate_count = max(
-            top_k * 4,
-            20,
-        )
+        print()
+        print("=" * 80)
+        print("MERGED CHILDREN")
+        print("=" * 80)
 
-        search_result = self.retriever.retrieve(
-            question=question,
-            where=where,
-            top_k=candidate_count,
-        )
+        for child_id, score in merged:
+
+            print(
+                child_id,
+                score,
+            )
+
+        #
+        # Build children
+        #
 
         children = []
 
-        for idx, child_id in enumerate(search_result.ids):
+        for child_id, score in merged:
 
-            child_chunk = ingestion.child_lookup[child_id]
+            child_chunk = (
+
+                ingestion.child_lookup[
+                    child_id
+                ]
+
+            )
 
             children.append(
 
@@ -80,28 +263,34 @@ class RetrievalPipeline:
                     parent_id=child_chunk.parent_id,
 
                     content=child_chunk.content,
+
                     child_index=child_chunk.child_index,
 
                     metadata=child_chunk.metadata,
 
-                    
-
-                    score=search_result.scores[idx],
-                    
+                    score=score,
 
                 )
 
             )
 
+        #
+        # Rerank
+        #
+
         if self.reranker:
 
-            children = self.reranker.rerank(
+            children = (
 
-                question=question,
+                self.reranker.rerank(
 
-                children=children,
+                    question=question,
 
-                top_k=top_k,
+                    children=children,
+
+                    top_k=top_k,
+
+                )
 
             )
 
@@ -109,20 +298,32 @@ class RetrievalPipeline:
 
             children = children[:top_k]
 
+        #
+        # Parent aggregation
+        #
+
         parents = {}
 
         for child in children:
 
-            parent = ingestion.parent_lookup[
-                child.parent_id
-            ]
+            parent = (
 
-            parents[parent.id] = parent
+                ingestion.parent_lookup[
+                    child.parent_id
+                ]
+
+            )
+
+            parents[
+                parent.id
+            ] = parent
 
         return RetrievalResult(
 
             children=children,
 
-            parents=list(parents.values()),
+            parents=list(
+                parents.values()
+            ),
 
         )

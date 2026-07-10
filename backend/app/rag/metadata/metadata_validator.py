@@ -6,6 +6,10 @@ from app.rag.metadata.metadata_schema import (
     MetadataSchema,
 )
 
+from app.rag.metadata.metadata_matcher import (
+    MetadataMatcher,
+)
+
 
 class MetadataValidator:
 
@@ -36,7 +40,7 @@ class MetadataValidator:
         for field_name, value in metadata.to_dict().items():
 
             #
-            # Skip empty values
+            # Empty
             #
 
             if value is None:
@@ -55,39 +59,67 @@ class MetadataValidator:
 
                 continue
 
-            #
-            # Allowed values
-            #
+            allowed_values = (
 
-            allowed_values = self.schema.allowed_values(
-
-                field_name,
-
+                self.schema.allowed_values(
+                    field_name,
+                )
             )
 
             #
-            # If catalog exists,
-            # validate against it.
+            # No catalog values
             #
 
-            if (
+            if not allowed_values:
 
-                allowed_values
+                validated.set(
 
-                and
+                    field_name,
 
-                value not in allowed_values
+                    value,
 
-            ):
+                )
 
                 continue
 
-            validated.set(
+            #
+            # Exact match
+            #
 
-                field_name,
+            if value in allowed_values:
 
-                value,
+                validated.set(
+
+                    field_name,
+
+                    value,
+
+                )
+
+                continue
+
+            #
+            # Fuzzy match
+            #
+
+            matched = MetadataMatcher.match(
+
+                value=value,
+
+                candidates=list(
+                    allowed_values
+                ),
 
             )
+
+            if matched:
+
+                validated.set(
+
+                    field_name,
+
+                    matched,
+
+                )
 
         return validated
