@@ -2,6 +2,12 @@ from datetime import datetime
 import json
 from pathlib import Path
 
+from app.rag.evaluation.dataset.evaluation_dataset_loader import (
+
+    EvaluationDatasetLoader,
+
+)
+
 from app.rag.evaluation.dataset.dataset_loader import (
     DatasetLoader,
 )
@@ -170,7 +176,9 @@ retrieval_pipeline = RetrievalPipeline(
 
             decomposer=LLMQueryDecomposer(
 
-                llm=GroqLLM(),
+                llm=GroqLLM(
+                    model="llama-3.1-8b-instant",
+                ),
 
             )
 
@@ -211,11 +219,24 @@ pipeline = AnswerPipeline(
 # LOAD DATASET
 ###############################################################################
 
-dataset = DatasetLoader.load(
+dataset = (
 
-    "app/rag/evaluation/dataset/golden_dataset.json"
+    EvaluationDatasetLoader()
+
+    .load(
+
+        "app/rag/evaluation/dataset/generated/generated_dataset.json"
+
+    )
 
 )
+
+dataset = dataset[:3]
+
+print("================================" * 5)
+print("DATASET RESULTS")
+print("================================" * 5)
+print(dataset)
 
 metrics = build_metrics()
 
@@ -225,13 +246,19 @@ query_results = []
 # LOOP
 ###############################################################################
 
-for row in dataset:
+for sample in dataset:
 
-    question = row["question"]
+    question = sample.question
 
-    expected_answer = row.get(
+    expected_answer = (
 
-        "expected_answer"
+        sample.expected_answer
+
+    )
+
+    expected_sources = (
+
+        sample.expected_sources
 
     )
 
@@ -281,13 +308,25 @@ for row in dataset:
     # RUN EVAL
     ##########################################################
 
-    result = evaluate(
+    try:
+
+        result = evaluate(
 
         test_cases=[test_case],
 
         metrics=metrics,
 
     )
+
+    except Exception as e:
+
+        print()
+
+        print("Evaluation Failed")
+
+        print(e)
+
+        continue
 
     ##########################################################
     # EXTRACT SCORES
@@ -356,33 +395,171 @@ for row in dataset:
     # STORE QUERY RESULT
     ##########################################################
 
-    query_results.append(
+    actual_sources = [
 
-        {
+    p.metadata.get(
 
-            "question": question,
-
-            "expected_answer": expected_answer,
-
-            "actual_answer": rag_result.answer,
-
-            "metrics": metric_results,
-
-            "sources": [
-
-                p.metadata.get(
-
-                    "source"
-
-                )
-
-                for p in rag_result.retrieval.parents
-
-            ],
-
-        }
+        "source"
 
     )
+
+    for p in rag_result.retrieval.parents
+
+]
+    
+    expected_set = set(
+
+    expected_sources
+
+)
+
+    actual_set = set(
+
+    actual_sources
+
+)
+    
+    print()
+    print("=" * 100)
+    print("EXPECTED SOURCES")
+    print("=" * 100)
+
+    for s in expected_sources:
+
+        print("-", s)
+
+    print()
+    print("=" * 100)
+    print("RETRIEVED SOURCES")
+    print("=" * 100)
+
+    for s in actual_sources:
+
+        print("-", s)
+
+    if expected_set:
+
+        recall = (
+
+        len(
+
+            expected_set
+
+            &
+
+            actual_set
+
+        )
+
+        /
+
+        len(
+
+            expected_set
+
+        )
+
+    )
+
+    else:
+
+        recall = 1.0
+
+
+    if actual_set:
+
+        precision = (
+
+        len(
+
+            expected_set
+
+            &
+
+            actual_set
+
+        )
+
+        /
+
+        len(
+
+            actual_set
+
+        )
+
+    )
+
+    else:
+
+        precision = 1.0 
+
+    print()
+    print("=" * 100)
+    print("RETRIEVAL")
+    print("=" * 100)
+
+    print(
+
+    "Precision:",
+
+    round(
+
+        precision,
+
+        3,
+
+    )
+
+)
+
+    print(
+
+    "Recall:",
+
+    round(
+
+        recall,
+
+        3,
+
+    )
+
+)       
+    
+    query_results.append(
+
+    {
+
+        "question":
+
+            question,
+
+        "expected_answer":
+
+            expected_answer,
+
+        "actual_answer":
+
+            rag_result.answer,
+
+        "expected_sources":
+
+            expected_sources,
+
+        "actual_sources":
+
+            actual_sources,
+
+        "metrics": metric_results,
+
+        "retrieval_precision": precision,
+
+        "retrieval_recall": recall,    
+
+    }
+
+)
 
 ###############################################################################
 # AVERAGES
@@ -390,7 +567,32 @@ for row in dataset:
 
 averages = {}
 
+retrieval_precisions = []
+
+retrieval_recalls = []
+
+
 for query in query_results:
+
+    retrieval_precisions.append(
+
+        query[
+
+            "retrieval_precision"
+
+        ]
+
+    )
+
+    retrieval_recalls.append(
+
+        query[
+
+            "retrieval_recall"
+
+        ]
+
+    )
 
     for metric in query["metrics"]:
 
@@ -414,15 +616,53 @@ average_scores = {}
 
 for name, scores in averages.items():
 
-    average_scores[name] = round(
+    average_scores[
 
-        sum(scores)
+    "Retrieval Precision"
 
-        / len(scores),
+] = round(
 
-        3,
+    sum(
+
+        retrieval_precisions
 
     )
+
+    /
+
+    len(
+
+        retrieval_precisions
+
+    ),
+
+    3,
+
+)
+
+average_scores[
+
+    "Retrieval Recall"
+
+] = round(
+
+    sum(
+
+        retrieval_recalls
+
+    )
+
+    /
+
+    len(
+
+        retrieval_recalls
+
+    ),
+
+    3,
+
+)
 
 print()
 print("=" * 100)

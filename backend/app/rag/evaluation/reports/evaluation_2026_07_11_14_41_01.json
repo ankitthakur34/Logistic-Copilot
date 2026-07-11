@@ -1,0 +1,131 @@
+{
+    "average_scores": {
+        "Retrieval Precision": 0.333,
+        "Retrieval Recall": 1.0
+    },
+    "queries": [
+        {
+            "question": "What is the cause of the operational delay for Shipment SHP0001?",
+            "expected_answer": "Severe weather conditions near the Port of Rotterdam",
+            "actual_answer": "The cause of the operational delay for Shipment SHP0001 is severe weather conditions near the Port of Rotterdam. This information is corroborated by both the email (EMAIL-001) and the incident report (INC-2026-001), as well as a discussion.",
+            "expected_sources": [
+                "email_001_shp0001_customer_delay.md"
+            ],
+            "actual_sources": [
+                "email_001_shp0001_customer_delay.md",
+                "operations_meeting_2026_07_04.md",
+                "incident_shp0001_weather.md"
+            ],
+            "metrics": [
+                {
+                    "name": "Faithfulness",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions found, indicating a perfect alignment between the actual output and the retrieval context, which is absolutely fantastic!",
+                    "success": true
+                },
+                {
+                    "name": "Answer Relevancy",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the output perfectly addresses the input question about the cause of the operational delay for Shipment SHP0001, with no irrelevant statements, resulting in a flawless relevancy score.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Precision",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because all nodes in the retrieval contexts, such as the first node which states 'Shipment SHP0001 has experienced an operational delay due to severe weather conditions near the Port of Rotterdam', the second node which verifies 'severe weather conditions near Rotterdam', and the third node which provides additional details about 'severe weather conditions in the North Sea', are perfectly ranked and directly address the input question, making them all highly relevant.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Recall",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the expected output perfectly matches the information provided by the 1st node in the retrieval context, which directly mentions 'severe weather conditions near the Port of Rotterdam', resulting in a flawless recall.",
+                    "success": true
+                }
+            ],
+            "retrieval_precision": 0.3333333333333333,
+            "retrieval_recall": 1.0
+        },
+        {
+            "question": "What can be inferred about the impact of the delay on the shipment's security?",
+            "expected_answer": "The shipment remains secure despite the delay",
+            "actual_answer": "Based on the incident report for Shipment SHP0001, it can be inferred that the delay due to severe weather conditions did not compromise the shipment's security. The report specifically mentions that:\n\n* Containers remained secure\n* No cargo damage was reported\n* Crew safety was maintained\n\nThis suggests that despite the delay, the shipment and its contents were not put at risk.",
+            "expected_sources": [
+                "email_001_shp0001_customer_delay.md"
+            ],
+            "actual_sources": [
+                "incident_shp0004_customs.md",
+                "incident_shp0001_weather.md",
+                "email_001_shp0001_customer_delay.md"
+            ],
+            "metrics": [
+                {
+                    "name": "Faithfulness",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions found, indicating a perfect alignment between the actual output and the retrieval context, which is absolutely fantastic!",
+                    "success": true
+                },
+                {
+                    "name": "Answer Relevancy",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the output perfectly addresses the question about the impact of the delay on the shipment's security, with no irrelevant statements to detract from its relevance.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Precision",
+                    "score": 0.5,
+                    "reason": "The score is 0.50 because the first node in the retrieval contexts, which is ranked 1, contains information about 'Containers remained at customs terminal' which, although implies a secure location, does not directly address the impact of the delay on the shipment's security, and the third node, ranked 3, only mentions the delay due to weather conditions without addressing security, whereas the second node, ranked 2, directly states 'Containers remained secure', which should ideally be ranked higher than the other nodes to achieve a higher score.",
+                    "success": false
+                },
+                {
+                    "name": "Contextual Recall",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the sentence in the expected output can be directly attributed to node 2 in the retrieval context, which confirms the shipment's security during the delay, resulting in a perfect recall score.",
+                    "success": true
+                }
+            ],
+            "retrieval_precision": 0.3333333333333333,
+            "retrieval_recall": 1.0
+        },
+        {
+            "question": "What is the revised estimated time of arrival for Shipment SHP0001?",
+            "expected_answer": "20 July 2026",
+            "actual_answer": "The revised estimated time of arrival (ETA) for Shipment SHP0001 is 20 July 2026. This information is corroborated by both the email (EMAIL-001) and the context of the incident report (INC-2026-001).",
+            "expected_sources": [
+                "email_001_shp0001_customer_delay.md"
+            ],
+            "actual_sources": [
+                "email_001_shp0001_customer_delay.md",
+                "incident_shp0001_weather.md",
+                "email_002_shp0001_internal.md"
+            ],
+            "metrics": [
+                {
+                    "name": "Faithfulness",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions found, indicating a perfect alignment between the actual output and the retrieval context, which is absolutely fantastic!",
+                    "success": true
+                },
+                {
+                    "name": "Answer Relevancy",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the output perfectly addresses the input question without any irrelevant statements, demonstrating a strong relevance to the query about the revised estimated time of arrival for Shipment SHP0001.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Precision",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because all nodes in the retrieval contexts, such as the first node which mentions the 'Revised ETA' as '20 July 2026' for Shipment SHP0001, the second node which implies a revised ETA due to a 'significant delay', and the third node which mentions 'Shipment status is updated in CargoAI' and 'Customer receives ETA update', are highly relevant to the input question, resulting in a perfect ranking with no irrelevant nodes in the retrieval contexts.",
+                    "success": true
+                },
+                {
+                    "name": "Contextual Recall",
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the expected output '20 July 2026' perfectly matches the information in the 1st node in the retrieval context, which confirms the new estimated arrival time, resulting in a flawless recall.",
+                    "success": true
+                }
+            ],
+            "retrieval_precision": 0.3333333333333333,
+            "retrieval_recall": 1.0
+        }
+    ]
+}
