@@ -237,6 +237,7 @@ print("================================" * 5)
 print("DATASET RESULTS")
 print("================================" * 5)
 print(dataset)
+print(len(dataset))
 
 metrics = build_metrics()
 

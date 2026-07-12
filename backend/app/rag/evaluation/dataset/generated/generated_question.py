@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 
 @dataclass
@@ -8,4 +9,4 @@ class GeneratedQuestion:
 
     expected_answer: str
 
-    expected_sources: list[str]
+    expected_sources: List[str]

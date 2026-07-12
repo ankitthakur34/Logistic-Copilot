@@ -1,716 +1,215 @@
 [
     {
-        "question": "What is the cause of the operational delay for Shipment SHP0001?",
-        "expected_answer": "Severe weather conditions near the Port of Rotterdam",
+        "question": "What is the current status of Shipment SHP0001 and when is the revised estimated time of arrival?",
+        "expected_answer": "The shipment remains secure with no cargo damage reported, and the revised ETA is 20 July 2026, due to an approximate 48-hour delay caused by severe weather conditions.",
         "expected_sources": [
-            "email_001_shp0001_customer_delay.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the impact of the delay on the shipment's security?",
-        "expected_answer": "The shipment remains secure despite the delay",
-        "expected_sources": [
-            "email_001_shp0001_customer_delay.md"
-        ]
-    },
-    {
-        "question": "What is the revised estimated time of arrival for Shipment SHP0001?",
-        "expected_answer": "20 July 2026",
-        "expected_sources": [
-            "email_001_shp0001_customer_delay.md"
-        ]
-    },
-    {
-        "question": "Why has Rotterdam Port suspended unloading?",
-        "expected_answer": "High wind conditions",
-        "expected_sources": [
-            "email_002_shp0001_internal.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the potential impact of the high wind conditions on cargo?",
-        "expected_answer": "The high wind conditions may pose a risk to cargo, but no damage has been reported so far",
-        "expected_sources": [
-            "email_002_shp0001_internal.md"
-        ]
-    },
-    {
-        "question": "What is the main topic of the internal update?",
-        "expected_answer": "Rotterdam Port suspension of unloading due to high wind conditions and necessary follow-up actions",
-        "expected_sources": [
-            "email_002_shp0001_internal.md"
-        ]
-    },
-    {
-        "question": "What is the expected delay for shipment SHP0004 due to the customs inspection?",
-        "expected_answer": "24 hours",
-        "expected_sources": [
-            "email_003_shp0004_customer.md"
-        ]
-    },
-    {
-        "question": "Why did customs officials request additional documentation for shipment SHP0004?",
-        "expected_answer": "Because the shipment contains lithium batteries and requires special declarations.",
-        "expected_sources": [
-            "email_003_shp0004_customer.md"
-        ]
-    },
-    {
-        "question": "What is the current status of shipment SHP0004?",
-        "expected_answer": "It has been selected for a routine customs inspection in Hamburg and the required documents have been submitted.",
-        "expected_sources": [
-            "email_003_shp0004_customer.md"
-        ]
-    },
-    {
-        "question": "Where were the lithium battery declaration documents submitted?",
-        "expected_answer": "Hamburg Customs",
-        "expected_sources": [
-            "email_004_shp0004_customs.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the current status of the inspection process?",
-        "expected_answer": "It is ongoing and expected to conclude soon",
-        "expected_sources": [
-            "email_004_shp0004_customs.md"
-        ]
-    },
-    {
-        "question": "What is the overall status of the customs documentation submission?",
-        "expected_answer": "The documents have been successfully submitted and no additional customer action is required",
-        "expected_sources": [
-            "email_004_shp0004_customs.md"
-        ]
-    },
-    {
-        "question": "What was the duration of the temporary temperature deviation in the refrigerated container?",
-        "expected_answer": "42 minutes",
-        "expected_sources": [
-            "email_005_shp0007_customer.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the effectiveness of the backup power system in the refrigerated container?",
-        "expected_answer": "The backup power system was effective in restoring normal operation.",
-        "expected_sources": [
-            "email_005_shp0007_customer.md"
-        ]
-    },
-    {
-        "question": "What is the overall status of the cargo in Shipment SHP0007 after the temperature deviation?",
-        "expected_answer": "The cargo quality has not been affected.",
-        "expected_sources": [
-            "email_005_shp0007_customer.md"
-        ]
-    },
-    {
-        "question": "What was the final temperature reading after the inspection of container MSCU100018?",
-        "expected_answer": "2°C",
-        "expected_sources": [
-            "email_006_shp0007_reefer.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the overall condition of the container MSCU100018 based on the inspection findings?",
-        "expected_answer": "The container is in good working condition and the shipment can continue without restrictions.",
-        "expected_sources": [
-            "email_006_shp0007_reefer.md"
-        ]
-    },
-    {
-        "question": "What were the main findings of the inspection of container MSCU100018?",
-        "expected_answer": "The power connector was replaced, the backup generator was tested successfully, the cooling unit is functioning normally, and the temperature is stabilized at 2°C.",
-        "expected_sources": [
-            "email_006_shp0007_reefer.md"
-        ]
-    },
-    {
-        "question": "What is the current status of shipment SHP0010?",
-        "expected_answer": "It has reached Mumbai Port.",
-        "expected_sources": [
-            "email_007_shp0010_customer.md"
-        ]
-    },
-    {
-        "question": "Why has the berth allocation for shipment SHP0010 been delayed?",
-        "expected_answer": "Due to heavy terminal congestion.",
-        "expected_sources": [
-            "email_007_shp0010_customer.md"
-        ]
-    },
-    {
-        "question": "What will happen once unloading of shipment SHP0010 begins?",
-        "expected_answer": "A revised delivery schedule will be shared.",
-        "expected_sources": [
-            "email_007_shp0010_customer.md"
-        ]
-    },
-    {
-        "question": "What is the name of the ship that requires an alternate berth?",
-        "expected_answer": "MV Baltic Star",
-        "expected_sources": [
-            "email_008_shp0010_operations.md"
-        ]
-    },
-    {
-        "question": "Why is it important to obtain an alternate berth for MV Baltic Star?",
-        "expected_answer": "Because it contains high-priority retail cargo",
-        "expected_sources": [
-            "email_008_shp0010_operations.md"
-        ]
-    },
-    {
-        "question": "What has already been done regarding the possible delays of the shipment?",
-        "expected_answer": "The customer has already been informed",
-        "expected_sources": [
-            "email_008_shp0010_operations.md"
-        ]
-    },
-    {
-        "question": "What was the reason for the shipment delay of SHP0001?",
-        "expected_answer": "Severe weather conditions in the North Sea",
-        "expected_sources": [
+            "email_001_shp0001_customer_delay.md",
+            "email_002_shp0001_internal.md",
             "incident_shp0001_weather.md"
         ]
     },
     {
-        "question": "If the ETA was delayed by 48 hours due to the weather, what can be inferred about the impact of the weather on the shipment schedule?",
-        "expected_answer": "The weather significantly disrupted the shipment schedule, causing a substantial delay",
+        "question": "What were the causes and effects of the delay in Shipment SHP0001, and what actions were taken?",
+        "expected_answer": "The delay was caused by extreme weather conditions, resulting in a 48-hour delay. The effects included the temporary suspension of unloading operations and the reduction of vessel speed. Corrective actions taken included updating the shipment ETA, informing the customer, monitoring the weather every six hours, and rebooking the port slot after the weather improved.",
         "expected_sources": [
+            "email_001_shp0001_customer_delay.md",
+            "email_002_shp0001_internal.md",
             "incident_shp0001_weather.md"
         ]
     },
     {
-        "question": "What is a brief summary of the incident report regarding shipment SHP0001?",
-        "expected_answer": "Shipment SHP0001 experienced a delay due to severe weather conditions in the North Sea, resulting in a 48-hour delay in ETA",
+        "question": "What was the timeline of events leading to the delay of Shipment SHP0001, and what was the outcome?",
+        "expected_answer": "The timeline of events included a weather warning received at 04:30 UTC, wind speed exceeding safe limits at 05:10 UTC, vessel speed reduction at 06:00 UTC, and port suspension of unloading operations at 08:20 UTC. The customer was notified at 11:30 UTC. The outcome was a 48-hour delay, with the shipment and crew remaining safe, and no cargo damage reported.",
         "expected_sources": [
+            "email_001_shp0001_customer_delay.md",
+            "email_002_shp0001_internal.md",
             "incident_shp0001_weather.md"
         ]
     },
     {
-        "question": "What was the reason for the customs inspection delay of shipment SHP0004?",
-        "expected_answer": "The customs authorities requested additional documentation regarding lithium battery declarations.",
+        "question": "What was the cause of the delay in shipment SHP0004 and how long was the shipment delayed?",
+        "expected_answer": "The delay was caused by a routine customs inspection after arrival in Hamburg, where customs officials requested additional documentation related to lithium battery declarations. The shipment was delayed for approximately 24 hours.",
         "expected_sources": [
-            "incident_shp0004_customs.md"
+            "email_003_shp0004_customer.md",
+            "incident_shp0004_customs.md",
+            "email_004_shp0004_customs.md"
         ]
     },
     {
-        "question": "What can be inferred as a preventive measure to avoid similar delays in future shipments containing lithium batteries?",
-        "expected_answer": "Including complete declaration documents before vessel departure.",
+        "question": "What is the current status of shipment SHP0004 and what actions have been taken to resolve the customs inspection issue?",
+        "expected_answer": "The customs inspection is expected to conclude by tomorrow morning, and the operations team has already submitted the required documentation. The shipment was released by customs after successful verification.",
         "expected_sources": [
-            "incident_shp0004_customs.md"
+            "email_003_shp0004_customer.md",
+            "incident_shp0004_customs.md",
+            "email_004_shp0004_customs.md"
         ]
     },
     {
-        "question": "What was the outcome of the customs inspection of shipment SHP0004 after the operations team submitted the missing documentation?",
-        "expected_answer": "The customs released the shipment after successful verification.",
+        "question": "What steps can be taken to prevent similar customs inspection delays for future shipments containing lithium batteries?",
+        "expected_answer": "To prevent similar delays, future shipments containing lithium batteries should include complete declaration documents before vessel departure.",
         "expected_sources": [
-            "incident_shp0004_customs.md"
+            "email_003_shp0004_customer.md",
+            "incident_shp0004_customs.md",
+            "email_004_shp0004_customs.md"
         ]
     },
     {
-        "question": "What was the required temperature for the refrigerated container MSCU100018?",
-        "expected_answer": "2°C",
+        "question": "What was the cause of the temperature deviation in shipment SHP0007 and what actions were taken to correct it?",
+        "expected_answer": "The cause of the temperature deviation was a power interruption during container transfer. Corrective actions included activating the backup generator, inspecting the container by a reefer technician, and resuming continuous monitoring.",
         "expected_sources": [
+            "email_005_shp0007_customer.md",
+            "email_006_shp0007_reefer.md",
             "incident_shp0007_temperature.md"
         ]
     },
     {
-        "question": "Why was the cargo quality not affected despite the temperature abnormality in the container?",
-        "expected_answer": "Because the temperature returned to normal within the acceptable tolerance period.",
+        "question": "What is the current status of shipment SHP0007 and has the cargo quality been affected by the temperature deviation?",
+        "expected_answer": "The container is operating normally, and cargo quality has not been affected because the temperature returned to normal within the acceptable tolerance period.",
         "expected_sources": [
+            "email_005_shp0007_customer.md",
+            "email_006_shp0007_reefer.md",
             "incident_shp0007_temperature.md"
         ]
     },
     {
-        "question": "What is the current status of the container after the temperature alert and subsequent actions?",
-        "expected_answer": "The container is operating normally.",
+        "question": "How long did the temperature deviation last in shipment SHP0007, and what was the observed temperature during this time?",
+        "expected_answer": "The temperature deviation lasted approximately 42 minutes, and the observed temperature was 7°C, which was above the required temperature of 2°C.",
         "expected_sources": [
+            "email_005_shp0007_customer.md",
+            "email_006_shp0007_reefer.md",
             "incident_shp0007_temperature.md"
         ]
     },
     {
-        "question": "What was the average vessel waiting time at Mumbai Port due to high container traffic?",
-        "expected_answer": "30 hours",
+        "question": "What is the current status of Shipment SHP0010 and what actions have been taken to address the port congestion?",
+        "expected_answer": "Shipment SHP0010 is awaiting berth allocation due to heavy terminal congestion at Mumbai Port. Actions taken include requesting an alternate unloading slot, updating the shipment ETA, and sharing a revised delivery schedule with the customer.",
         "expected_sources": [
-            "incident_shp0010_port_congestion.md"
+            "email_007_shp0010_customer.md",
+            "incident_shp0010_port_congestion.md",
+            "email_008_shp0010_operations.md"
         ]
     },
     {
-        "question": "What can be inferred as the reason for the delay in Shipment SHP0010's unloading?",
-        "expected_answer": "Heavy congestion at Mumbai Port",
+        "question": "How has the port congestion at Mumbai Port affected the delivery schedule of Shipment SHP0010 and what is being done to mitigate the delay?",
+        "expected_answer": "The port congestion has caused a delay in the delivery schedule of Shipment SHP0010, with the average vessel waiting time increasing to 30 hours. To mitigate the delay, an alternate berth has been requested for MV Baltic Star, which is carrying high-priority retail cargo.",
         "expected_sources": [
-            "incident_shp0010_port_congestion.md"
+            "email_007_shp0010_customer.md",
+            "incident_shp0010_port_congestion.md",
+            "email_008_shp0010_operations.md"
         ]
     },
     {
-        "question": "What is the current status of Shipment SHP0010?",
-        "expected_answer": "Shipment awaiting berth allocation",
+        "question": "What is the estimated waiting time for Shipment SHP0010 at Mumbai Port and when can the customer expect an update on the revised delivery schedule?",
+        "expected_answer": "The current estimated waiting time for Shipment SHP0010 at Mumbai Port is approximately 30 hours. The customer can expect an update on the revised delivery schedule once unloading begins, as the operations team will share the updated schedule as soon as possible.",
         "expected_sources": [
-            "incident_shp0010_port_congestion.md"
+            "email_007_shp0010_customer.md",
+            "incident_shp0010_port_congestion.md",
+            "email_008_shp0010_operations.md"
         ]
     },
     {
-        "question": "What are the three main purposes of a Bill of Lading?",
-        "expected_answer": "Receipt of goods, Contract of carriage, and Document of title",
-        "expected_sources": [
-            "bill_of_lading.md"
-        ]
-    },
-    {
-        "question": "If a shipper does not provide the required information for a Bill of Lading, what is likely to happen to their cargo?",
-        "expected_answer": "The cargo cannot be released until the Bill of Lading requirements are satisfied",
-        "expected_sources": [
-            "bill_of_lading.md"
-        ]
-    },
-    {
-        "question": "What is a brief summary of the role of a Bill of Lading in international cargo transportation?",
-        "expected_answer": "A Bill of Lading is a crucial shipping document that serves as a receipt, contract, and title document, and is required for cargo release",
-        "expected_sources": [
-            "bill_of_lading.md"
-        ]
-    },
-    {
-        "question": "What is the first status in a typical shipment progress?",
-        "expected_answer": "Booking Confirmed",
+        "question": "What is the current status of a shipment after the vessel has departed and before it arrives at the port?",
+        "expected_answer": "In Transit",
         "expected_sources": [
             "cargo_tracking.md"
         ]
     },
     {
-        "question": "If a shipment is currently 'In Transit', what was the previous status and what would be the next status?",
-        "expected_answer": "The previous status would be 'Vessel Departed' and the next status would be 'Port Arrival'.",
+        "question": "What information is typically available for tracking a shipment, and what is the sequence of events after a container is loaded?",
+        "expected_answer": "Tracking information includes Shipment Number, Container Number, Vessel, ETA, and Current Port. After a container is loaded, the sequence of events is: Vessel Departed, In Transit, Port Arrival, Customs Clearance, Out for Delivery, and Delivered.",
         "expected_sources": [
             "cargo_tracking.md"
         ]
     },
     {
-        "question": "What information is typically available for cargo tracking?",
-        "expected_answer": "Shipment Number, Container Number, Vessel, ETA, and Current Port",
+        "question": "What happens after customs clearance in the typical shipment status, and what is the final status of a shipment?",
+        "expected_answer": "After customs clearance, the shipment is Out for Delivery, and the final status is Delivered.",
         "expected_sources": [
             "cargo_tracking.md"
         ]
     },
     {
-        "question": "What is the typical temperature range for a Reefer Container?",
-        "expected_answer": "-30°C to +30°C",
+        "question": "What are the common sizes of dry containers and what are they typically used for?",
+        "expected_answer": "The common sizes of dry containers are 20 FT, 40 FT, and 40 FT High Cube, and they are used for standard cargo such as electronics, furniture, and machinery.",
         "expected_sources": [
             "container_types.md"
         ]
     },
     {
-        "question": "Which type of container would be most suitable for transporting a large crane?",
-        "expected_answer": "Open Top Container or Flat Rack",
+        "question": "What types of cargo are suitable for open top containers and flat rack containers?",
+        "expected_answer": "Open top containers are used for oversized cargo loaded from the top, while flat rack containers are used for heavy machinery and industrial equipment.",
         "expected_sources": [
             "container_types.md"
         ]
     },
     {
-        "question": "What are the main types of containers mentioned in the document?",
-        "expected_answer": "Dry Container, Reefer Container, Open Top Container, Flat Rack, Tank Container",
+        "question": "What is the typical temperature range for reefer containers and what types of cargo are they used for?",
+        "expected_answer": "The typical temperature range for reefer containers is -30°C to +30°C, and they are used for temperature-controlled cargo such as food, medicine, and chemicals.",
         "expected_sources": [
             "container_types.md"
         ]
     },
     {
-        "question": "What does the Incoterm FOB stand for?",
-        "expected_answer": "Free On Board",
+        "question": "What are the key differences in transportation responsibilities between FOB and EXW Incoterms?",
+        "expected_answer": "Under FOB, the seller delivers goods onto the vessel, while under EXW, the buyer assumes almost all transportation responsibilities.",
         "expected_sources": [
             "incoterms.md"
         ]
     },
     {
-        "question": "If a seller uses the Incoterm EXW, who is responsible for most of the transportation costs?",
-        "expected_answer": "The buyer",
+        "question": "How do the seller's responsibilities change when using CIF instead of FOB Incoterms?",
+        "expected_answer": "When using CIF, the seller pays freight and insurance, whereas under FOB, the seller only delivers goods onto the vessel.",
         "expected_sources": [
             "incoterms.md"
         ]
     },
     {
-        "question": "What is the main difference between the Incoterms CIF and FOB in terms of insurance?",
-        "expected_answer": "The seller pays insurance in CIF, but not in FOB",
+        "question": "What is the primary distinction between DAP and other Incoterms like FOB and CIF in terms of delivery?",
+        "expected_answer": "DAP requires the seller to deliver cargo to the destination, whereas FOB and CIF only require delivery onto the vessel or payment of freight and insurance, respectively.",
         "expected_sources": [
             "incoterms.md"
         ]
     },
     {
-        "question": "What is the primary function of cargo vessels?",
-        "expected_answer": "To transport containers between ports worldwide.",
+        "question": "What are the key components of a cargo vessel and what is the sequence of events during a voyage?",
+        "expected_answer": "The key components of a cargo vessel include the Bridge, Engine Room, Cargo Hold, Crane, and Navigation System. The sequence of events during a voyage consists of Origin Port, Loading, Sea Transit, Destination Port, and Unloading.",
         "expected_sources": [
             "vessel_overview.md"
         ]
     },
     {
-        "question": "If a cargo vessel is currently at sea, which step in the voyage would it have already completed?",
-        "expected_answer": "Loading",
+        "question": "How do you track a cargo vessel and what information is used to identify it?",
+        "expected_answer": "Each vessel has a unique IMO Number, MMSI, and Call Sign used to track and identify it.",
         "expected_sources": [
             "vessel_overview.md"
         ]
     },
     {
-        "question": "What are the three unique identifiers for each cargo vessel?",
-        "expected_answer": "IMO Number, MMSI, and Call Sign",
+        "question": "What is the purpose of the Cargo Hold and Crane components in the context of a cargo vessel's voyage?",
+        "expected_answer": "The Cargo Hold is where containers are stored during transport, and the Crane is likely used for loading and unloading containers at the Origin and Destination Ports.",
         "expected_sources": [
             "vessel_overview.md"
         ]
     },
     {
-        "question": "What is the current status of shipment SHP0001 onboard MV Maersk Horizon?",
-        "expected_answer": "It is currently delayed due to severe weather conditions near Rotterdam.",
+        "question": "What is the current status of shipment SHP0001 and what is the reason for the delay?",
+        "expected_answer": "Shipment SHP0001 onboard MV Maersk Horizon is currently delayed due to severe weather conditions near Rotterdam, with port authorities suspending unloading operations due to high wind speeds.",
         "expected_sources": [
             "operations_meeting_2026_07_04.md"
         ]
     },
     {
-        "question": "What would be the most likely course of action if the weather conditions near Rotterdam improve?",
-        "expected_answer": "The revised ETA would be updated immediately.",
+        "question": "What actions have been taken to inform the customer about the shipment delay and who is responsible for sending updates?",
+        "expected_answer": "Customer Samsung India has already been informed through an official delay notification, and Priya Mehta is responsible for sending customer status updates.",
         "expected_sources": [
             "operations_meeting_2026_07_04.md"
         ]
     },
     {
-        "question": "What were the main points discussed during the Daily Operations Review meeting?",
-        "expected_answer": "The main points discussed included vessel status, shipment delays, customer communication, and action items related to a delayed shipment onboard MV Maersk Horizon.",
+        "question": "What is the plan for monitoring the weather conditions and updating the estimated time of arrival (ETA) for shipment SHP0001?",
+        "expected_answer": "The team will continue weather monitoring every six hours and update the ETA immediately if weather conditions change, with John Williams responsible for monitoring vessel progress and Raj Sharma coordinating with Rotterdam Port Authority.",
         "expected_sources": [
             "operations_meeting_2026_07_04.md"
-        ]
-    },
-    {
-        "question": "What was the expected delay for shipment SHP0004 due to customs inspection?",
-        "expected_answer": "24 hours",
-        "expected_sources": [
-            "operations_meeting_2026_07_08.md"
-        ]
-    },
-    {
-        "question": "Why was it important for Operations to submit the required documentation within two hours?",
-        "expected_answer": "To minimize the delay and ensure the shipment could continue as soon as possible",
-        "expected_sources": [
-            "operations_meeting_2026_07_08.md"
-        ]
-    },
-    {
-        "question": "What was the main purpose of the Customs Operations Review meeting?",
-        "expected_answer": "To discuss customs delays and review documentation, specifically regarding shipment SHP0004",
-        "expected_sources": [
-            "operations_meeting_2026_07_08.md"
-        ]
-    },
-    {
-        "question": "What was the shipment number that experienced a temporary reefer temperature deviation?",
-        "expected_answer": "SHP0007",
-        "expected_sources": [
-            "operations_meeting_2026_07_10.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the effectiveness of the backup power system in the reefer equipment?",
-        "expected_answer": "The backup power system was effective in restoring normal cooling within a reasonable time frame.",
-        "expected_sources": [
-            "operations_meeting_2026_07_10.md"
-        ]
-    },
-    {
-        "question": "What were the main points discussed during the Reefer Operations Review meeting?",
-        "expected_answer": "The meeting discussed temperature alerts, equipment status, a shipment's temporary temperature deviation, and resulting decisions and action items.",
-        "expected_sources": [
-            "operations_meeting_2026_07_10.md"
-        ]
-    },
-    {
-        "question": "What is the average waiting time at Mumbai Port due to congestion?",
-        "expected_answer": "30 hours",
-        "expected_sources": [
-            "operations_meeting_2026_07_12.md"
-        ]
-    },
-    {
-        "question": "Why did Operations request an alternate unloading slot for shipment SHP0010?",
-        "expected_answer": "Due to heavy congestion at Mumbai Port",
-        "expected_sources": [
-            "operations_meeting_2026_07_12.md"
-        ]
-    },
-    {
-        "question": "What was decided regarding the prioritization of cargo after berth allocation at the Mumbai Port Operations meeting?",
-        "expected_answer": "To prioritize retail cargo",
-        "expected_sources": [
-            "operations_meeting_2026_07_12.md"
-        ]
-    },
-    {
-        "question": "What is the customs team's current task according to the document?",
-        "expected_answer": "Inspecting a shipment that requires a lithium battery declaration",
-        "expected_sources": [
-            "customs_team.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the status of the shipment based on the conversation between Raj Sharma and the Customs Officer?",
-        "expected_answer": "The shipment is being processed and the inspection is expected to be completed the next day",
-        "expected_sources": [
-            "customs_team.md"
-        ]
-    },
-    {
-        "question": "What is a brief summary of the conversation between Raj Sharma and the Customs Officer?",
-        "expected_answer": "Raj Sharma uploaded documents for a customs inspection, which were received, and the inspection is expected to finish the next day",
-        "expected_sources": [
-            "customs_team.md"
-        ]
-    },
-    {
-        "question": "Who received a weather warning from Rotterdam?",
-        "expected_answer": "Raj Sharma",
-        "expected_sources": [
-            "operations_channel.md"
-        ]
-    },
-    {
-        "question": "What can be inferred as the reason for suspending unloading at the port?",
-        "expected_answer": "Weather warning",
-        "expected_sources": [
-            "operations_channel.md"
-        ]
-    },
-    {
-        "question": "What is a brief summary of the actions taken in response to the weather warning?",
-        "expected_answer": "The team checked the impact, suspended unloading, sent a delay email to the customer, updated the ETA, and will continue monitoring.",
-        "expected_sources": [
-            "operations_channel.md"
-        ]
-    },
-    {
-        "question": "What is the current situation at Mumbai Port?",
-        "expected_answer": "Heavy congestion",
-        "expected_sources": [
-            "port_operations.md"
-        ]
-    },
-    {
-        "question": "What is the implication of waiting for confirmation of an alternate berth?",
-        "expected_answer": "Delays in port operations",
-        "expected_sources": [
-            "port_operations.md"
-        ]
-    },
-    {
-        "question": "What is the summary of the conversation between the Port Coordinator, Raj Sharma, and Customer Success?",
-        "expected_answer": "The Port Coordinator informed about heavy congestion at Mumbai Port, and updates are being awaited for an alternate berth and CargoAI ETA confirmation.",
-        "expected_sources": [
-            "port_operations.md"
-        ]
-    },
-    {
-        "question": "What was the initial temperature alert on container MSCU100018?",
-        "expected_answer": "7°C",
-        "expected_sources": [
-            "reefer_team.md"
-        ]
-    },
-    {
-        "question": "What can be inferred as the cause of the temperature alert on container MSCU100018 based on the conversation?",
-        "expected_answer": "A faulty connector",
-        "expected_sources": [
-            "reefer_team.md"
-        ]
-    },
-    {
-        "question": "What was the outcome of the temperature alert on container MSCU100018?",
-        "expected_answer": "The issue was resolved by replacing the connector and the temperature returned to normal",
-        "expected_sources": [
-            "reefer_team.md"
-        ]
-    },
-    {
-        "question": "What is the first step in the container loading procedure?",
-        "expected_answer": "Verify booking confirmation.",
-        "expected_sources": [
-            "container_loading.md"
-        ]
-    },
-    {
-        "question": "What should be done if a container is found to be damaged during the inspection?",
-        "expected_answer": "Do not load it without inspection approval.",
-        "expected_sources": [
-            "container_loading.md"
-        ]
-    },
-    {
-        "question": "What are the main steps involved in the container loading process?",
-        "expected_answer": "The process involves verifying booking confirmation, inspecting the container, verifying the seal, confirming weight declaration, loading according to the stowage plan, and confirming completion.",
-        "expected_sources": [
-            "container_loading.md"
-        ]
-    },
-    {
-        "question": "What is the first step in the customs clearance procedure?",
-        "expected_answer": "Verify commercial invoice.",
-        "expected_sources": [
-            "customs_clearance.md"
-        ]
-    },
-    {
-        "question": "What should be done if customs clearance takes longer than expected?",
-        "expected_answer": "Notify the Operations Manager and inform the customer.",
-        "expected_sources": [
-            "customs_clearance.md"
-        ]
-    },
-    {
-        "question": "What teams are involved in the customs clearance process?",
-        "expected_answer": "Customs Team, Operations Team, and Customer Service.",
-        "expected_sources": [
-            "customs_clearance.md"
-        ]
-    },
-    {
-        "question": "What is the first step in the procedure for handling hazardous cargo during transportation?",
-        "expected_answer": "Verify IMDG classification.",
-        "expected_sources": [
-            "dangerous_goods.md"
-        ]
-    },
-    {
-        "question": "What should be done if a hazardous container is found to be damaged during transportation?",
-        "expected_answer": "Immediately report it to the Safety Team.",
-        "expected_sources": [
-            "dangerous_goods.md"
-        ]
-    },
-    {
-        "question": "What is the main purpose of the Standard Operating Procedure (SOP) for Dangerous Goods Handling?",
-        "expected_answer": "To explain how hazardous cargo should be handled during transportation.",
-        "expected_sources": [
-            "dangerous_goods.md"
-        ]
-    },
-    {
-        "question": "What is the first step in the arrival process at the port?",
-        "expected_answer": "Notify terminal.",
-        "expected_sources": [
-            "port_operations.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the importance of crane availability during the arrival process?",
-        "expected_answer": "Crane availability is crucial for the arrival process, as it is a necessary step to be confirmed before the vessel can begin operations.",
-        "expected_sources": [
-            "port_operations.md"
-        ]
-    },
-    {
-        "question": "What are the main steps involved in the port operations process?",
-        "expected_answer": "The main steps involved in the port operations process include arrival and departure, with specific tasks such as notifying the terminal, verifying berth allocation, confirming cargo loading, completing documentation, and obtaining port clearance.",
-        "expected_sources": [
-            "port_operations.md"
-        ]
-    },
-    {
-        "question": "What is the primary purpose of the Standard Operating Procedure (SOP) for Reefer Operations?",
-        "expected_answer": "The primary purpose of the SOP is to explain the handling of refrigerated containers.",
-        "expected_sources": [
-            "reefer_operations.md"
-        ]
-    },
-    {
-        "question": "If the temperature deviation is 1.5°C, what action should be taken according to the procedure?",
-        "expected_answer": "The temperature deviation should be recorded.",
-        "expected_sources": [
-            "reefer_operations.md"
-        ]
-    },
-    {
-        "question": "What are the key steps involved in the procedure for handling refrigerated containers?",
-        "expected_answer": "The key steps include verifying temperature settings, connecting the reefer container to power, monitoring temperature, recording temperature deviations, and escalating deviations greater than 2°C.",
-        "expected_sources": [
-            "reefer_operations.md"
-        ]
-    },
-    {
-        "question": "What is the current temperature in Dubai according to the weather bulletin?",
-        "expected_answer": "43°C",
-        "expected_sources": [
-            "dubai_weather_2026_07_10.md"
-        ]
-    },
-    {
-        "question": "Why is it recommended to increase reefer inspection frequency during unloading?",
-        "expected_answer": "Due to the extreme heat conditions",
-        "expected_sources": [
-            "dubai_weather_2026_07_10.md"
-        ]
-    },
-    {
-        "question": "What is the main operational impact of the extreme heat conditions on reefer containers?",
-        "expected_answer": "They require continuous power monitoring",
-        "expected_sources": [
-            "dubai_weather_2026_07_10.md"
-        ]
-    },
-    {
-        "question": "What is the wind speed in Hamburg according to the weather bulletin?",
-        "expected_answer": "15 km/h",
-        "expected_sources": [
-            "hamburg_weather_2026_07_08.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the safety of navigation in Hamburg based on the given weather conditions?",
-        "expected_answer": "The safety of navigation is likely not compromised due to the clear weather and excellent visibility.",
-        "expected_sources": [
-            "hamburg_weather_2026_07_08.md"
-        ]
-    },
-    {
-        "question": "What is the overall operational impact of the weather in Hamburg as reported in the bulletin?",
-        "expected_answer": "No weather-related disruption reported.",
-        "expected_sources": [
-            "hamburg_weather_2026_07_08.md"
-        ]
-    },
-    {
-        "question": "What is the current weather condition in Mumbai port?",
-        "expected_answer": "Heavy Rain",
-        "expected_sources": [
-            "mumbai_weather_2026_07_12.md"
-        ]
-    },
-    {
-        "question": "How might the minor reduction in crane productivity affect the overall operations at the Mumbai port?",
-        "expected_answer": "It could lead to a slight decrease in the efficiency of cargo handling and potentially cause further delays.",
-        "expected_sources": [
-            "mumbai_weather_2026_07_12.md"
-        ]
-    },
-    {
-        "question": "What is the summary of the current situation at the Mumbai port?",
-        "expected_answer": "The Mumbai port is experiencing heavy rain with moderate visibility, resulting in a minor reduction in crane productivity and a current delay of 4-6 hours.",
-        "expected_sources": [
-            "mumbai_weather_2026_07_12.md"
-        ]
-    },
-    {
-        "question": "What is the current wave height at the Port of Rotterdam?",
-        "expected_answer": "6 meters",
-        "expected_sources": [
-            "rotterdam_weather_2026_07_04.md"
-        ]
-    },
-    {
-        "question": "What can be inferred about the safety of vessel operations at the Port of Rotterdam based on the weather conditions?",
-        "expected_answer": "The strong winds and high wave height indicate that vessel operations are not safe, leading to the suspension of unloading operations.",
-        "expected_sources": [
-            "rotterdam_weather_2026_07_04.md"
-        ]
-    },
-    {
-        "question": "What is the overall situation at the Port of Rotterdam according to the weather bulletin?",
-        "expected_answer": "The port is experiencing strong winds and high waves, resulting in the temporary suspension of unloading operations, reduced vessel speed, and delayed berth allocation, with an estimated recovery within 48 hours.",
-        "expected_sources": [
-            "rotterdam_weather_2026_07_04.md"
         ]
     }
 ]
