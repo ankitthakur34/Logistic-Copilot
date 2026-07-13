@@ -73,6 +73,8 @@ class MarkdownLoader(BaseLoader):
             # -----------------------------
             metadata = {
 
+                "loader": "markdown",
+
                 "source": file.name,
 
                 "folder": file.parent.name,

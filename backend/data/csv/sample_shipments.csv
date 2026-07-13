@@ -1,0 +1,4 @@
+shipment_id,customer,vessel,origin,destination,status,eta
+SHP0011,Samsung India,MV Ocean Star,Singapore,Mumbai,In Transit,2026-07-18
+SHP0012,Apple,MV Pacific Carrier,Rotterdam,Dubai,Delayed - Port Congestion,2026-07-20
+SHP0013,Tesla,MV Horizon Express,Hamburg,Chennai,Customs Inspection,2026-07-22

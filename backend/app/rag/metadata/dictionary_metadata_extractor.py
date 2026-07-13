@@ -146,4 +146,6 @@ class DictionaryMetadataExtractor(
 
                 )
 
+        print("DICT")
+        print(metadata)  
         return metadata

@@ -1,7 +1,5 @@
 
 import chromadb
-from torch import where
-
 from app.rag.vector_store.base_vector_store import BaseVectorStore
 from app.rag.schema.search_result import SearchResult
 

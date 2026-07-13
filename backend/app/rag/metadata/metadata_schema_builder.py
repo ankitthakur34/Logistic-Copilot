@@ -21,6 +21,7 @@ NON_QUERY_FIELDS = {
     "from",
 
     "to",
+    "status"
 
 }
 

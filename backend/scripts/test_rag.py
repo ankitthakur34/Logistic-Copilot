@@ -70,13 +70,39 @@ from app.rag.context_compression.context_compression_pipeline import (
 from app.rag.decomposition.decomposition_pipeline import DecompositionPipeline
 from app.rag.decomposition.llm_query_decomposer import LLMQueryDecomposer
 
+from app.rag.loader.multi_loader import (
+    MultiLoader,
+)
+from app.rag.loader.pdf_loader import PdfLoader
+from app.rag.loader.csv_loader import CsvLoader
+from app.rag.loader.json_loader import JsonLoader
+
 ###############################################################################
 # INGESTION
 ###############################################################################
 
 ingestion = IngestionPipeline(
 
-    loader=MarkdownLoader("data/rag"),
+    loader=MultiLoader(
+
+    loaders=[
+
+        MarkdownLoader(
+            "data/rag"
+        ),
+        PdfLoader(
+            "data/pdf"
+        ),
+        CsvLoader(
+            "data/csv"
+        ),
+        JsonLoader(
+            "data/json"
+        )
+
+    ]
+
+),
 
     chunker=ParentChildChunker(),
 
@@ -209,24 +235,18 @@ pipeline = AnswerPipeline(
 # QUESTION
 ###############################################################################
 
-question = "Why is shipment SHP0007 delayed and Any update on vessel Maersk Horizon? "
+question ="give me information about SHP0007 only"
 
 
 questions = [
 
     "Why is shipment SHP0007 delayed?",
 
-    "Why is Apple's refrigerated shipment delayed?",
+    "What is the revised ETA of SHP0001?",
 
-    "Show me the Rotterdam weather issue.",
+    "What actions were taken after the weather delay of SHP0001?",
 
-    "Any update on vessel Maersk Horizon?",
-
-    "Email regarding SHP0010",
-
-    "High priority emails for Samsung India",
-
-    "Incidents at Rotterdam",
+    "Give complete timeline of SHP0001 delay."
 
 ]
 

@@ -105,6 +105,7 @@ from app.rag.decomposition.decomposition_pipeline import (
 from app.rag.decomposition.llm_query_decomposer import (
     LLMQueryDecomposer,
 )
+from app.rag.loader.multi_loader import MultiLoader
 
 ###############################################################################
 # BUILD RAG
@@ -112,7 +113,17 @@ from app.rag.decomposition.llm_query_decomposer import (
 
 ingestion = IngestionPipeline(
 
-    loader=MarkdownLoader("data/rag"),
+    loader=MultiLoader(
+
+    loaders=[
+
+        MarkdownLoader(
+            "data/rag"
+        ),
+
+    ]
+
+),
 
     chunker=ParentChildChunker(),
 

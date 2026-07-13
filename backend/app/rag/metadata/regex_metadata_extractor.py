@@ -40,5 +40,7 @@ class RegexMetadataExtractor(
                     match.group(0),
 
                 )
+        print("REGEX")
+        print(metadata)        
 
         return metadata

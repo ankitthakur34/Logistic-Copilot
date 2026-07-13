@@ -1,0 +1,20 @@
+[
+  {
+    "shipment_id": "SHP0101",
+    "customer": "Apple",
+    "vessel": {
+      "name": "MV Horizon",
+      "eta": "2026-07-20"
+    },
+    "status": "Delayed"
+  },
+  {
+    "shipment_id": "SHP0102",
+    "customer": "Samsung",
+    "vessel": {
+      "name": "MV Pacific",
+      "eta": "2026-07-22"
+    },
+    "status": "In Transit"
+  }
+]
