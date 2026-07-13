@@ -6,24 +6,13 @@ vs = ChromaVectorStore()
 
 collection = vs.collection
 
-print()
-print("=" * 100)
-print("TOTAL")
-print("=" * 100)
 
-print(collection.count())
 
-print()
-print("=" * 100)
-print("SAMPLE METADATA")
-print("=" * 100)
-
-data = collection.get(
-    limit=20,
-    include=["metadatas"]
+res = collection.get(
+    where={
+        "shipment_id:": "SHP0102"
+    }
 )
-
-for m in data["metadatas"]:
-
-    print(m)
-    print("-" * 80)
+print(res)
+print(res["ids"])
+print(res["metadatas"])

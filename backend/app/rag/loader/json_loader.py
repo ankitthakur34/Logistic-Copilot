@@ -1,103 +1,47 @@
 from pathlib import Path
 import json
 
-from app.rag.loader.base_loader import (
-    BaseLoader,
-)
-
-from app.rag.schema.document import (
-    Document,
-)
-
-from app.rag.utils.json_utils import (
-    flatten_json,
+from app.rag.loader.base_loader import BaseLoader
+from app.rag.schema.document import Document
+from app.rag.utils.json_utils import flatten_json
+from app.rag.utils.metadata_normalizer import (
+    normalize_metadata,
 )
 
 
 class JsonLoader(BaseLoader):
 
-    def __init__(
+    def __init__(self, root_path: str):
 
-        self,
-        root_path: str,
+        self.root_path = Path(root_path)
 
-    ):
-
-        self.root_path = Path(
-
-            root_path
-
-        )
-
-    def load(
-
-        self,
-
-    ) -> list[Document]:
+    def load(self):
 
         documents = []
 
-        json_files = self.root_path.rglob(
-
+        files = self.root_path.rglob(
             "*.json"
-
         )
 
-        for file in json_files:
+        for file in files:
 
             with open(
-
                 file,
                 encoding="utf8",
-
             ) as f:
 
-                data = json.load(
-
-                    f
-
-                )
-
-            #
-            # support list
-            #
+                data = json.load(f)
 
             if not isinstance(
-
                 data,
                 list,
-
             ):
+                data = [data]
 
-                data = [
+            for idx, item in enumerate(data):
 
-                    data
-
-                ]
-
-            for idx, item in enumerate(
-
-                data
-
-            ):
-
-                if not isinstance(
-
-                    item,
-                    dict,
-
-                ):
-
-                    continue
-
-                flattened = (
-
-                    flatten_json(
-
-                        item
-
-                    )
-
+                flattened = flatten_json(
+                    item
                 )
 
                 content = "\n".join(
@@ -105,43 +49,29 @@ class JsonLoader(BaseLoader):
                     f"{k}: {v}"
 
                     for k, v
-
                     in flattened.items()
-
                 )
 
                 metadata = {
 
-                    "loader":"json",
+                    "loader": "json",
 
-                    "source":file.name,
+                    "source": file.name,
 
-                    "row":idx,
+                    "row": idx,
 
-                    "path":str(file),
-
+                    "path": str(file),
                 }
 
-                #
-                # optional:
-                # add fields
-                #
+                metadata.update(
+                    flattened
+                )
 
-                for key, value in (
-
-                    flattened.items()
-
-                ):
-
-                    metadata[
-
-                        key.lower()
-
-                    ] = str(
-
-                        value
-
+                metadata = (
+                    normalize_metadata(
+                        metadata
                     )
+                )
 
                 documents.append(
 
@@ -150,9 +80,7 @@ class JsonLoader(BaseLoader):
                         content=content,
 
                         metadata=metadata,
-
                     )
-
                 )
 
         return documents

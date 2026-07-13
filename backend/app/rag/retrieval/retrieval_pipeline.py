@@ -23,9 +23,9 @@ from app.rag.llm.groq_llm import (
     GroqLLM,
 )
 
-from app.rag.metadata.dictionary_metadata_extractor import (
-    DictionaryMetadataExtractor,
-)
+# from app.rag.metadata.dictionary_metadata_extractor import (
+#     DictionaryMetadataExtractor,
+# )
 
 
 class RetrievalPipeline:
@@ -60,7 +60,7 @@ class RetrievalPipeline:
 
                 regex_extractor=RegexMetadataExtractor(),
 
-                dictionary_extractor=DictionaryMetadataExtractor(),
+                # dictionary_extractor=DictionaryMetadataExtractor(),
 
                 llm_extractor=LLMMetadataExtractor(
 

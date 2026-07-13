@@ -1,32 +1,30 @@
-from pathlib import Path
 import pandas as pd
+from pathlib import Path
 
 from app.rag.loader.base_loader import BaseLoader
 from app.rag.schema.document import Document
+from app.rag.utils.metadata_normalizer import (
+    normalize_metadata,
+)
 
 
 class CsvLoader(BaseLoader):
 
-    def __init__(
-        self,
-        root_path: str,
-    ):
+    def __init__(self, root_path):
 
         self.root_path = Path(
             root_path
         )
 
-    def load(
-        self,
-    ) -> list[Document]:
+    def load(self):
 
         documents = []
 
-        csv_files = self.root_path.rglob(
+        files = self.root_path.rglob(
             "*.csv"
         )
 
-        for file in csv_files:
+        for file in files:
 
             df = pd.read_csv(
                 file
@@ -34,7 +32,17 @@ class CsvLoader(BaseLoader):
 
             for idx, row in df.iterrows():
 
-                text_parts = []
+                row_dict = (
+                    row.to_dict()
+                )
+
+                content = "\n".join(
+
+                    f"{k}: {v}"
+
+                    for k, v
+                    in row_dict.items()
+                )
 
                 metadata = {
 
@@ -46,35 +54,13 @@ class CsvLoader(BaseLoader):
 
                     "path": str(file),
 
+                    **row_dict,
                 }
 
-                for col, value in row.items():
-
-                    if pd.isna(value):
-
-                        continue
-
-                    text_parts.append(
-
-                        f"{col}: {value}"
-
+                metadata = (
+                    normalize_metadata(
+                        metadata
                     )
-
-                    #
-                    # Optional:
-                    # put row values into metadata
-                    #
-
-                    metadata[
-
-                        col.lower()
-
-                    ] = str(value)
-
-                content = "\n".join(
-
-                    text_parts
-
                 )
 
                 documents.append(
@@ -84,9 +70,7 @@ class CsvLoader(BaseLoader):
                         content=content,
 
                         metadata=metadata,
-
                     )
-
                 )
 
         return documents

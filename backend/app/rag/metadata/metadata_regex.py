@@ -3,7 +3,7 @@ import re
 PATTERNS = {
 
     # Logistics
-    "shipment": re.compile(r"\bSHP\d{4}\b", re.IGNORECASE),
+    "shipment_id": re.compile(r"\bSHP\d{4}\b", re.IGNORECASE),
     "email_id": re.compile(r"\bEMAIL-\d+\b", re.IGNORECASE),
     "incident_id": re.compile(r"\bINC\d+\b", re.IGNORECASE),
 

@@ -3,22 +3,9 @@ import yaml
 
 from app.rag.loader.base_loader import BaseLoader
 from app.rag.schema.document import Document
-from datetime import date, datetime
-
-
-def normalize_metadata(metadata: dict):
-
-    normalized = {}
-
-    for key, value in metadata.items():
-
-        if isinstance(value, (date, datetime)):
-            normalized[key] = value.isoformat()
-
-        else:
-            normalized[key] = value
-
-    return normalized
+from app.rag.utils.metadata_normalizer import (
+    normalize_metadata,
+)
 
 
 class MarkdownLoader(BaseLoader):
@@ -27,7 +14,7 @@ class MarkdownLoader(BaseLoader):
 
         self.root_path = Path(root_path)
 
-    def load(self) -> list[Document]:
+    def load(self):
 
         documents = []
 
@@ -36,15 +23,12 @@ class MarkdownLoader(BaseLoader):
         for file in markdown_files:
 
             raw_text = file.read_text(
-                encoding="utf-8"
+                encoding="utf8"
             )
 
             frontmatter = {}
             content = raw_text
 
-            # -----------------------------
-            # Parse YAML Front Matter
-            # -----------------------------
             if raw_text.startswith("---"):
 
                 parts = raw_text.split(
@@ -54,23 +38,15 @@ class MarkdownLoader(BaseLoader):
 
                 if len(parts) >= 3:
 
-                    try:
-
-                        frontmatter = yaml.safe_load(
+                    frontmatter = (
+                        yaml.safe_load(
                             parts[1]
-                        ) or {}
-
-                        content = parts[2].strip()
-
-                    except yaml.YAMLError:
-
-                        print(
-                            f"[WARNING] Invalid YAML in {file.name}"
                         )
+                        or {}
+                    )
 
-            # -----------------------------
-            # Metadata
-            # -----------------------------
+                    content = parts[2].strip()
+
             metadata = {
 
                 "loader": "markdown",
@@ -86,12 +62,14 @@ class MarkdownLoader(BaseLoader):
 
             documents.append(
 
-               
-              Document(
-    content=content,
-    metadata=normalize_metadata(metadata),
-)
+                Document(
 
+                    content=content,
+
+                    metadata=normalize_metadata(
+                        metadata
+                    ),
+                )
             )
 
         return documents

@@ -19,7 +19,7 @@ class MetadataExtractionPipeline:
 
         regex_extractor,
 
-        dictionary_extractor,
+        # dictionary_extractor,
 
         llm_extractor,
 
@@ -27,7 +27,7 @@ class MetadataExtractionPipeline:
 
         self.regex_extractor = regex_extractor
 
-        self.dictionary_extractor = dictionary_extractor
+        # self.dictionary_extractor = dictionary_extractor
 
         self.llm_extractor = llm_extractor
 
@@ -138,29 +138,25 @@ class MetadataExtractionPipeline:
         # Dictionary extraction
         #
 
-        dictionary_metadata = (
+        # dictionary_metadata = (
 
-            self.dictionary_extractor.extract(
+        #     self.dictionary_extractor.extract(
 
-                question,
+        #         question,
 
-                self.schema,
+        #         self.schema,
 
-            )
+        #     )
 
-        )
+        # )
 
         #
         # Merge both
         #
 
-        metadata = self.merge(
+        metadata = regex_metadata
 
-            regex_metadata,
-
-            dictionary_metadata,
-
-        )
+    
 
         #
         # Use LLM only if needed

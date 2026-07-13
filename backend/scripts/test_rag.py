@@ -235,7 +235,7 @@ pipeline = AnswerPipeline(
 # QUESTION
 ###############################################################################
 
-question ="give me information about SHP0007 only"
+question ="Give timeline of SHP0001 delay and current status of SHP0102."
 
 
 questions = [

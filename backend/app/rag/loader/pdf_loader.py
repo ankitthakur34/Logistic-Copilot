@@ -1,8 +1,12 @@
-from pathlib import Path
 import fitz
+from pathlib import Path
 
 from app.rag.loader.base_loader import BaseLoader
 from app.rag.schema.document import Document
+
+from app.rag.utils.metadata_normalizer import (
+    normalize_metadata,
+)
 
 
 class PdfLoader(BaseLoader):
@@ -16,9 +20,7 @@ class PdfLoader(BaseLoader):
             root_path
         )
 
-    def load(
-        self,
-    ) -> list[Document]:
+    def load(self):
 
         documents = []
 
@@ -28,27 +30,17 @@ class PdfLoader(BaseLoader):
 
         for file in pdf_files:
 
-            pdf = fitz.open(
-                file
-            )
+            pdf = fitz.open(file)
 
-            for page_number in range(
-
+            for page_no in range(
                 len(pdf)
-
             ):
 
                 page = pdf.load_page(
-
-                    page_number
-
+                    page_no
                 )
 
                 text = page.get_text()
-
-                if not text.strip():
-
-                    continue
 
                 metadata = {
 
@@ -56,11 +48,16 @@ class PdfLoader(BaseLoader):
 
                     "source": file.name,
 
-                    "page": page_number + 1,
+                    "page": page_no,
 
                     "path": str(file),
-
                 }
+
+                metadata = (
+                    normalize_metadata(
+                        metadata
+                    )
+                )
 
                 documents.append(
 
@@ -69,7 +66,6 @@ class PdfLoader(BaseLoader):
                         content=text,
 
                         metadata=metadata,
-
                     )
 
                 )
