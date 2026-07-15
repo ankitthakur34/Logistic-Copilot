@@ -235,7 +235,7 @@ pipeline = AnswerPipeline(
 # QUESTION
 ###############################################################################
 
-question ="Give timeline of SHP0001 delay and current status of SHP0102."
+question ="What is the revised ETA of SHP0001?."
 
 
 questions = [
