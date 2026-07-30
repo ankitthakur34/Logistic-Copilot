@@ -8,6 +8,7 @@ class SQLAnswerResult:
     question: str
 
     sql: str
+    normalized_sql:str
 
     answer: str
 

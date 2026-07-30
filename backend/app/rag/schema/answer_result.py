@@ -7,6 +7,8 @@ from app.rag.schema.retrieval_result import RetrievalResult
 @dataclass
 class AnswerResult:
 
+    question: str
+
     answer: str
 
     retrieval: RetrievalResult

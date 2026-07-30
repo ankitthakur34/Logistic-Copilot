@@ -64,7 +64,7 @@ class SQLAgent:
         # sql generation
         #
 
-        sql = (
+        generated_sql = (
 
             self.sql_generator.generate(
 
@@ -75,24 +75,19 @@ class SQLAgent:
             )
 
         )
-        print()
-        print("=" * 80)
-        print("SQL")
-        print(sql)
-        sql = SQLNormalizer.normalize(sql)
+      
+       
 
-        print()
-        print("=" * 80)
-        print("NORMALIZED SQL")
-        print(sql)
+        
 
 
         #
-        # validate
+        # normalize and validate
         #
+        normalized_sql = SQLNormalizer.normalize(generated_sql)
 
         self.validator.validate(
-            sql
+            normalized_sql
         )
 
         #
@@ -102,7 +97,7 @@ class SQLAgent:
         rows = (
 
             self.executor.execute(
-                sql
+                normalized_sql
             )
 
         )
@@ -117,7 +112,7 @@ class SQLAgent:
 
                 question=question,
 
-                sql=sql,
+                sql=normalized_sql,
 
                 rows=rows,
 
@@ -129,7 +124,9 @@ class SQLAgent:
 
             question=question,
 
-            sql=sql,
+            sql=generated_sql,
+            normalized_sql=normalized_sql,
+
 
             answer=answer,
 
