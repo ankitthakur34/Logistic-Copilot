@@ -100,11 +100,11 @@ class MetadataValidator:
 
         validated = MetadataResult()
 
-        print()
-        print("=" * 80)
-        print("RAW METADATA")
-        print(metadata)
-        print("=" * 80)
+        # print()
+        # print("=" * 80)
+        # print("RAW METADATA")
+        # print(metadata)
+        # print("=" * 80)
 
         for field_name, value in metadata.to_dict().items():
 

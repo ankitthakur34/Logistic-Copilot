@@ -24,7 +24,7 @@ with app.app_context():
 
     question = (
 
-        "Which users own high priority tasks "
+        "What is the revised ETA of SHP0001?"
 
         "for shipments going to Singapore?"
 

@@ -1,8 +1,34 @@
-from app.bootstrap.rag import build_rag
-from app.bootstrap.sql import build_sql
+from app.bootstrap.rag import (
+    build_rag,
+)
 
-from app.tools.rag_tool import RAGTool
-from app.tools.sql_tool import SQLTool
+from app.bootstrap.sql import (
+    build_sql,
+)
+
+from app.bootstrap.llm import (
+    get_llm,
+)
+
+from app.tools.rag_tool import (
+    RAGTool,
+)
+
+from app.tools.sql_tool import (
+    SQLTool,
+)
+
+from app.agents.router_agent.router_agent import (
+    RouterAgent,
+)
+from app.agents.router_agent.router_answer_merger import (
+    RouterAnswerMerger,
+)
+
+from app.agents.router_agent.router_llm import (
+    RouterLLM,
+)
+from app.tools.base_tool import BaseTool
 
 
 class ServiceRegistry:
@@ -19,7 +45,7 @@ class ServiceRegistry:
 
         self.sql_tool = SQLTool(
 
-            agent=self.sql_agent
+            agent=self.sql_agent,
 
         )
 
@@ -40,3 +66,57 @@ class ServiceRegistry:
             ingestion=self.ingestion,
 
         )
+
+        ###################################################
+        # TOOL REGISTRY
+        ###################################################
+
+        self.tools = {}
+
+        self.register_tool(
+
+            self.sql_tool,
+
+        )
+
+        self.register_tool(
+
+            self.rag_tool,
+
+        )
+
+        ###################################################
+        # ROUTER
+        ###################################################
+
+        self.router_agent = RouterAgent(
+
+    router_llm=RouterLLM(
+
+        get_llm(),
+
+    ),
+
+    answer_merger=RouterAnswerMerger(
+
+        get_llm(),
+
+    ),
+
+    tools=self.tools,
+
+)
+
+    ###################################################
+    # Register Tool
+    ###################################################
+
+    def register_tool(
+
+        self,
+
+        tool: BaseTool,
+
+    ):
+
+        self.tools[tool.name] = tool

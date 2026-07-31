@@ -82,10 +82,10 @@ class ChromaVectorStore(BaseVectorStore):
 
     }
         
-        print("=" * 80)
-        print("WHERE FILTER")
-        print(where)
-        print("=" * 80)
+        # print("=" * 80)
+        # print("WHERE FILTER")
+        # print(where)
+        # print("=" * 80)
 
         if where:
 

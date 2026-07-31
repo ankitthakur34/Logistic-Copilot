@@ -44,7 +44,16 @@ RESULTS:
 {rows}
 
 
-Generate a natural language answer.
+Answer ONLY using the database rows.
+
+If the database rows do not contain enough information to answer the user's question,
+explicitly state that the information is not available in the database.
+
+Do NOT guess.
+
+Do NOT infer.
+
+Do NOT use outside knowledge.
 """
 
         result = PromptResult(

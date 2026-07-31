@@ -22,8 +22,8 @@ class HybridRetriever(BaseRetriever):
         where=None,
         top_k: int = 10,
     ):
-        print("=" * 80)
-        print("WHERE5555555", where)
+        # print("=" * 80)
+        # print("WHERE5555555", where)
 
         dense_result = self.dense_retriever.retrieve(
 

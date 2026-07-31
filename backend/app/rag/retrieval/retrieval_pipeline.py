@@ -152,9 +152,9 @@ class RetrievalPipeline:
 
             print()
 
-            print("WHERE FILTER")
+            # print("WHERE FILTER")
 
-            print(where)
+            # print(where)
 
             print()
 
@@ -226,17 +226,17 @@ class RetrievalPipeline:
 
         )
 
-        print()
-        print("=" * 80)
-        print("MERGED CHILDREN")
-        print("=" * 80)
+        # print()
+        # print("=" * 80)
+        # print("MERGED CHILDREN")
+        # print("=" * 80)
 
-        for child_id, score in merged:
+        # for child_id, score in merged:
 
-            print(
-                child_id,
-                score,
-            )
+        #     print(
+        #         child_id,
+        #         score,
+        #     )
 
         #
         # Build children
