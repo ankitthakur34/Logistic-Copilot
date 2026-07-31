@@ -31,6 +31,7 @@ class AnswerGenerator:
         )
 
         return AnswerResult(
+            question=question,
 
             answer=llm_result.answer,
 

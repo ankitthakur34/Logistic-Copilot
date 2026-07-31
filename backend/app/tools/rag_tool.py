@@ -1,7 +1,7 @@
 from app.tools.base_tool import BaseTool
 from app.tools.tool_result import ToolResult
+from app.rag.generation.answer_pipeline import AnswerPipeline
 
-from app.rag.answer_pipeline import AnswerPipeline
 
 
 class RAGTool(BaseTool):
