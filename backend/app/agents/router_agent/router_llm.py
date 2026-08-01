@@ -1,13 +1,16 @@
-from app.rag.prompts.prompt_result import (
-    PromptResult,
-)
-
-from app.rag.llm.base_llm import (
-    BaseLLM,
-)
+from app.rag.prompts.prompt_result import PromptResult
+from app.rag.llm.base_llm import BaseLLM
 
 from app.agents.router_agent.router_prompt import (
     ROUTER_SYSTEM_PROMPT,
+)
+
+from app.agents.router_agent.router_parser import (
+    RouterParser,
+)
+
+from app.agents.router_agent.router_result import (
+    RouterResult,
 )
 
 
@@ -23,13 +26,19 @@ class RouterLLM:
 
         self.llm = llm
 
+        self.parser = RouterParser()
+
+    ####################################################
+    # Route
+    ####################################################
+
     def route(
 
         self,
 
         question: str,
 
-    ) -> str:
+    ) -> RouterResult:
 
         user_prompt = f"""
 QUESTION:
@@ -51,8 +60,12 @@ Return ONLY valid JSON.
 
         response = self.llm.generate(
 
-            prompt
+            prompt,
 
         )
 
-        return response.answer.strip()
+        return self.parser.parse(
+
+            response.answer,
+
+        )

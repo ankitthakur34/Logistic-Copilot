@@ -20,3 +20,6 @@ rapidfuzz
 pytest
 deepeval
 pymupdf
+langgraph
+langchain-core
+langsmith

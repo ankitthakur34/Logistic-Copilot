@@ -1,34 +1,16 @@
-from app.bootstrap.rag import (
-    build_rag,
-)
+from app.bootstrap.rag import build_rag
+from app.bootstrap.sql import build_sql
+from app.bootstrap.llm import get_llm
 
-from app.bootstrap.sql import (
-    build_sql,
-)
-
-from app.bootstrap.llm import (
-    get_llm,
-)
-
-from app.tools.rag_tool import (
-    RAGTool,
-)
-
-from app.tools.sql_tool import (
-    SQLTool,
-)
-
-from app.agents.router_agent.router_agent import (
-    RouterAgent,
-)
-from app.agents.router_agent.router_answer_merger import (
-    RouterAnswerMerger,
-)
-
-from app.agents.router_agent.router_llm import (
-    RouterLLM,
-)
+from app.tools.rag_tool import RAGTool
+from app.tools.sql_tool import SQLTool
 from app.tools.base_tool import BaseTool
+
+from app.agents.router_agent.router_agent import RouterAgent
+from app.agents.router_agent.router_answer_merger import RouterAnswerMerger
+from app.agents.router_agent.router_llm import RouterLLM
+
+from app.langgraph.graph import LogisticsCopilotGraph
 
 
 class ServiceRegistry:
@@ -68,44 +50,55 @@ class ServiceRegistry:
         )
 
         ###################################################
-        # TOOL REGISTRY
+        # Tool Registry
         ###################################################
 
         self.tools = {}
 
-        self.register_tool(
+        self.register_tool(self.sql_tool)
+        self.register_tool(self.rag_tool)
 
-            self.sql_tool,
+        ###################################################
+        # Shared Components
+        ###################################################
+
+        self.router_llm = RouterLLM(
+
+            get_llm(),
 
         )
 
-        self.register_tool(
+        self.answer_merger = RouterAnswerMerger(
 
-            self.rag_tool,
+            get_llm(),
 
         )
 
         ###################################################
-        # ROUTER
+        # LangGraph
+        ###################################################
+
+        self.graph = LogisticsCopilotGraph(
+
+            router_llm=self.router_llm,
+
+            sql_tool=self.sql_tool,
+
+            rag_tool=self.rag_tool,
+
+            answer_merger=self.answer_merger,
+
+        )
+
+        ###################################################
+        # Router Agent
         ###################################################
 
         self.router_agent = RouterAgent(
 
-    router_llm=RouterLLM(
+            graph=self.graph,
 
-        get_llm(),
-
-    ),
-
-    answer_merger=RouterAnswerMerger(
-
-        get_llm(),
-
-    ),
-
-    tools=self.tools,
-
-)
+        )
 
     ###################################################
     # Register Tool
