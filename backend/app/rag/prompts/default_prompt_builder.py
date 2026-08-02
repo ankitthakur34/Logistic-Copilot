@@ -136,12 +136,12 @@ SYSTEM
 
 {user_prompt}
 """.strip()
-        # print()
-        # print("=" * 80)
-        # print("CONTEXT fULL PROPMT")
-        # print("=" * 80)
-        # print(full_prompt)
-        # print()
+        print()
+        print("=" * 80)
+        print("CONTEXT fULL PROPMT")
+        print("=" * 80)
+        print(full_prompt)
+        print()
 
         return PromptResult(
 

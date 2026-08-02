@@ -12,6 +12,7 @@ from app.langgraph.nodes.rag_node import RAGNode
 from app.langgraph.nodes.coordinator_node import CoordinatorNode
 from app.langgraph.nodes.merger_node import MergeNode
 from app.agents.router_agent.router_decision import RouterDecision
+from app.langgraph.nodes.normalizer_node import NormalizerNode
 
 
 class LogisticsCopilotGraph:
@@ -43,6 +44,13 @@ class LogisticsCopilotGraph:
         ####################################################
         # Nodes
         ####################################################
+        builder.add_node(
+
+    "normalize",
+
+    NormalizerNode(),
+
+)
 
         builder.add_node(
 
@@ -100,7 +108,21 @@ class LogisticsCopilotGraph:
 
         )
 
-        builder.add_edge(START, "router")
+        builder.add_edge(
+
+    START,
+
+    "normalize",
+
+)
+
+        builder.add_edge(
+
+    "normalize",
+
+    "router",
+
+)
 
         builder.add_edge("router", "sql")
         builder.add_edge("router", "rag")

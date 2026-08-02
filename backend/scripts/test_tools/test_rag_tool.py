@@ -16,7 +16,7 @@ tool = registry.rag_tool
 # Question
 ###############################################################################
 
-question = "What is the revised ETA of SHP0001?"
+question = "what is custom clearance?"
 
 ###############################################################################
 # Execute

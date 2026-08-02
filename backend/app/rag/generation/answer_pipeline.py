@@ -60,14 +60,14 @@ class AnswerPipeline:
 
         )
 
-        # print("=" * 80)
-        # print("PARENTS SENT TO LLM")
-        # print("=" * 80)
+        print("=" * 80)
+        print("PARENTS SENT TO LLM")
+        print("=" * 80)
 
-        # for parent in retrieval.parents:
-        #     print(parent.id)
-        #     print(parent.content)
-        #     print()
+        for parent in retrieval.parents:
+            print(parent.id)
+            print(parent.content)
+            print()
 
         return self.answer_generator.generate(
 
