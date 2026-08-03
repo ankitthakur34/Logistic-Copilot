@@ -1,0 +1,29 @@
+{
+    "model_name": "Shipment Delay Predictor",
+    "algorithm": "RandomForestClassifier",
+    "version": "1.0",
+    "accuracy": 0.83,
+    "precision": 0.7192982456140351,
+    "recall": 0.5020408163265306,
+    "f1_score": 0.5913461538461539,
+    "roc_auc": 0.9132369239086363,
+    "trained_on": "2026-08-03",
+    "features": [
+        "customer",
+        "shipment_status",
+        "origin_port",
+        "destination_port",
+        "origin_country",
+        "destination_country",
+        "vessel_status",
+        "container_count",
+        "container_type",
+        "pending_tasks",
+        "completed_tasks",
+        "high_priority_tasks",
+        "eta_remaining_days",
+        "maintenance_vessel",
+        "reefer_container",
+        "has_many_pending_tasks"
+    ]
+}
