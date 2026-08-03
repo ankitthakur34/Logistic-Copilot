@@ -1,12 +1,14 @@
 "use client";
 
-import { Plus, MessageSquare, Settings, Ship } from "lucide-react";
+import { Plus } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
+
+import { ChatSession } from "@/types/chat";
 
 interface SidebarProps {
-  chats: any[];
+  chats: ChatSession[];
   activeChatId: string;
   onSelect: (id: string) => void;
   onNewChat: () => void;
@@ -19,49 +21,31 @@ export default function Sidebar({
   onNewChat,
 }: SidebarProps) {
   return (
-    <div className="flex w-72 flex-col border-r border-slate-800 bg-slate-900 text-white">
+    <aside className="flex h-screen w-64 flex-col border-r bg-[#202123] text-white">
 
-      {/* Logo */}
-      <div className="flex items-center gap-3 border-b border-slate-800 px-6 py-6">
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600">
-          <Ship className="h-6 w-6" />
-        </div>
+      {/* Header */}
 
-        <div>
-          <h1 className="text-lg font-semibold">
-            Logistics Copilot
-          </h1>
-
-          <p className="text-xs text-slate-400">
-            AI Operations Assistant
-          </p>
-        </div>
-      </div>
-
-      {/* New Chat */}
       <div className="p-4">
+
         <Button
           onClick={onNewChat}
-          className="h-11 w-full justify-start gap-2 rounded-xl bg-blue-600 hover:bg-blue-700"
+          variant="outline"
+          className="flex w-full items-center justify-start gap-2 border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white"
         >
           <Plus size={18} />
           New Chat
         </Button>
+
       </div>
 
-      <Separator className="bg-slate-800" />
-
       {/* Chat List */}
-      <ScrollArea className="flex-1 px-3 py-3">
 
-        <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Chats
-        </p>
+      <ScrollArea className="flex-1 px-2">
 
         <div className="space-y-1">
 
           {chats.length === 0 && (
-            <div className="px-3 py-6 text-center text-sm text-slate-500">
+            <div className="px-3 py-2 text-sm text-gray-400">
               No conversations yet
             </div>
           )}
@@ -70,20 +54,21 @@ export default function Sidebar({
             <button
               key={chat.id}
               onClick={() => onSelect(chat.id)}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-all duration-200
-
-                ${
-                  activeChatId === chat.id
-                    ? "bg-slate-700"
-                    : "hover:bg-slate-800"
-                }
-              `}
+              className={`w-full rounded-lg px-3 py-3 text-left transition-colors ${
+                activeChatId === chat.id
+                  ? "bg-[#343541]"
+                  : "hover:bg-[#2A2B32]"
+              }`}
             >
-              <MessageSquare size={18} />
-
-              <span className="truncate text-sm">
+              <div className="truncate text-sm font-medium">
                 {chat.title}
-              </span>
+              </div>
+
+              <div className="mt-1 truncate text-xs text-gray-400">
+                {chat.messages.length === 0
+                  ? "Empty conversation"
+                  : `${chat.messages.length} messages`}
+              </div>
             </button>
           ))}
 
@@ -91,33 +76,16 @@ export default function Sidebar({
 
       </ScrollArea>
 
-      <Separator className="bg-slate-800" />
-
       {/* Footer */}
-      <div className="flex items-center justify-between p-4">
 
-        <div>
+      <div className="border-t border-white/10 p-4">
 
-          <p className="text-sm font-medium">
-            Demo
-          </p>
-
-          <p className="text-xs text-slate-400">
-            Logistics AI
-          </p>
-
+        <div className="text-xs text-gray-500">
+          Logistics Copilot
         </div>
-
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-slate-300 hover:bg-slate-800 hover:text-white"
-        >
-          <Settings size={18} />
-        </Button>
 
       </div>
 
-    </div>
+    </aside>
   );
 }

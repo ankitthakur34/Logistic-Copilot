@@ -128,3 +128,19 @@
     @apply font-sans;
   }
 }
+html,
+body{
+
+    background:#ffffff;
+
+    color:#111827;
+
+    font-feature-settings:"cv02","cv03","cv04","cv11";
+
+}
+
+*{
+
+    scroll-behavior:smooth;
+
+}

@@ -1,52 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
+
+import { askQuestion } from "@/lib/api";
 
 import {
   ChatMessage as Message,
   ChatSession,
 } from "@/types/chat";
 
-import { askQuestion } from "@/lib/api";
-
 interface ChatWindowProps {
-
   chat?: ChatSession;
 
-  ensureChat: () => string;
-
-  onMessagesChange: (
-
-    chatId: string,
-
-    messages: Message[],
-
-  ) => void;
-
+  onMessagesChange: (messages: Message[]) => void;
 }
 
 export default function ChatWindow({
-
   chat,
-
-  ensureChat,
-
   onMessagesChange,
-
 }: ChatWindowProps) {
+
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const [loading, setLoading] = useState(false);
 
-  ////////////////////////////////////////////////////////
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+
+    setMessages(chat?.messages ?? []);
+
+  }, [chat]);
+
+  useEffect(() => {
+
+    bottomRef.current?.scrollIntoView({
+
+      behavior: "smooth",
+
+    });
+
+  }, [messages]);
+
+  function updateMessages(newMessages: Message[]) {
+
+    setMessages(newMessages);
+
+    onMessagesChange(newMessages);
+
+  }
 
   async function handleSend(question: string) {
 
-    const chatId = ensureChat();
-
-    const currentMessages = chat?.messages ?? [];
+    if (!chat) return;
 
     const userMessage: Message = {
 
@@ -58,31 +67,21 @@ export default function ChatWindow({
 
     };
 
-    const messagesAfterUser = [
+    const userMessages = [
 
-      ...currentMessages,
+      ...messages,
 
       userMessage,
 
     ];
 
-    onMessagesChange(
-
-      chatId,
-
-      messagesAfterUser,
-
-    );
+    updateMessages(userMessages);
 
     setLoading(true);
 
     try {
 
-      const response = await askQuestion(
-
-        question,
-
-      );
+      const response = await askQuestion(question);
 
       const assistantMessage: Message = {
 
@@ -96,49 +95,33 @@ export default function ChatWindow({
 
       };
 
-      onMessagesChange(
+      updateMessages([
 
-        chatId,
+        ...userMessages,
 
-        [
+        assistantMessage,
 
-          ...messagesAfterUser,
-
-          assistantMessage,
-
-        ],
-
-      );
+      ]);
 
     }
 
-    catch (error) {
+    catch {
 
-      console.error(error);
+      updateMessages([
 
-      const assistantMessage: Message = {
+        ...userMessages,
 
-        id: crypto.randomUUID(),
+        {
 
-        role: "assistant",
+          id: crypto.randomUUID(),
 
-        content: "Unable to contact backend.",
+          role: "assistant",
 
-      };
+          content: "Unable to contact backend.",
 
-      onMessagesChange(
+        },
 
-        chatId,
-
-        [
-
-          ...messagesAfterUser,
-
-          assistantMessage,
-
-        ],
-
-      );
+      ]);
 
     }
 
@@ -150,51 +133,21 @@ export default function ChatWindow({
 
   }
 
-  ////////////////////////////////////////////////////////
-
-  const messages = chat?.messages ?? [];
-
-  ////////////////////////////////////////////////////////
-
   return (
 
-    <div className="flex flex-1 flex-col bg-slate-50">
+    <div className="flex flex-1 flex-col bg-white">
 
       {/* Header */}
 
-      <div className="border-b bg-white px-8 py-6 shadow-sm">
+      <div className="border-b bg-white px-8 py-4">
 
-    <div className="flex items-center justify-between">
+        <h1 className="text-lg font-semibold text-slate-800">
 
-        <div>
+          Logistics Copilot
 
-            <h1 className="text-2xl font-bold text-slate-900">
+        </h1>
 
-                🚢 Logistics Copilot
-
-            </h1>
-
-            <p className="mt-1 text-sm text-slate-500">
-
-                AI Assistant for Logistics Operations
-
-            </p>
-
-        </div>
-
-        <div className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2">
-
-            <span className="text-sm font-medium text-blue-700">
-
-                Online
-
-            </span>
-
-        </div>
-
-    </div>
-
-</div>
+      </div>
 
       {/* Messages */}
 
@@ -202,116 +155,113 @@ export default function ChatWindow({
 
         {
 
-          messages.length === 0 && !loading ?
+          !chat ?
 
-            (
+          (
 
-             <div className="flex h-full items-center justify-center">
+            <div className="flex h-full items-center justify-center">
 
-    <div className="max-w-2xl text-center">
+              <div className="text-center">
 
-        <div className="mb-6 text-6xl">
+                <h1 className="text-4xl font-semibold text-slate-800">
 
-            🚢
+                  Logistics Copilot
 
-        </div>
+                </h1>
 
-        <h1 className="text-4xl font-bold text-slate-800">
+                <p className="mt-3 text-slate-500">
 
-            Logistics Copilot
+                  Start a new conversation from the sidebar.
 
-        </h1>
-
-        <p className="mt-4 text-lg text-slate-500">
-
-            AI assistant for shipment tracking, SOPs,
-
-            incidents, meetings and logistics operations.
-
-        </p>
-
-        <div className="mt-10 grid grid-cols-2 gap-4">
-
-            <div className="rounded-2xl border bg-white p-5 shadow-sm">
-
-                Why was SHP0001 delayed?
-
-            </div>
-
-            <div className="rounded-2xl border bg-white p-5 shadow-sm">
-
-                Customs Clearance SOP
-
-            </div>
-
-            <div className="rounded-2xl border bg-white p-5 shadow-sm">
-
-                Show pending tasks
-
-            </div>
-
-            <div className="rounded-2xl border bg-white p-5 shadow-sm">
-
-                Shipment ETA
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-            )
-
-            :
-
-            (
-
-<div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-8 py-8">
-                {
-
-                  messages.map(message => (
-
-                    <ChatMessage
-
-                      key={message.id}
-
-                      message={message}
-
-                    />
-
-                  ))
-
-                }
-
-                {
-
-                  loading &&
-
-                  (
-
-                    <ChatMessage
-
-                      message={{
-
-                        id: "loading",
-
-                        role: "assistant",
-
-                        content: "Thinking...",
-
-                      }}
-
-                    />
-
-                  )
-
-                }
+                </p>
 
               </div>
 
-            )
+            </div>
+
+          )
+
+          :
+
+          messages.length === 0 ?
+
+          (
+
+            <div className="flex h-full items-center justify-center">
+
+              <div className="text-center">
+
+                <h1 className="text-4xl font-semibold text-slate-800">
+
+                  Logistics Copilot
+
+                </h1>
+
+                <p className="mt-3 text-slate-500">
+
+                  Ask anything about shipments, SOPs,
+
+                  incidents, tasks or meetings.
+
+                </p>
+
+              </div>
+
+            </div>
+
+          )
+
+          :
+
+          (
+
+            <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 py-8">
+
+              {
+
+                messages.map((message) => (
+
+                  <ChatMessage
+
+                    key={message.id}
+
+                    message={message}
+
+                  />
+
+                ))
+
+              }
+
+              {
+
+                loading &&
+
+                (
+
+                  <ChatMessage
+
+                    message={{
+
+                      id: "loading",
+
+                      role: "assistant",
+
+                      content: "Thinking...",
+
+                    }}
+
+                  />
+
+                )
+
+              }
+
+              <div ref={bottomRef} />
+
+            </div>
+
+          )
 
         }
 
@@ -319,19 +269,29 @@ export default function ChatWindow({
 
       {/* Input */}
 
-     <div className="border-t bg-white px-8 py-6">
+      {
 
-    <div className="mx-auto max-w-5xl">
+        chat &&
 
-        <ChatInput
+        (
 
-            onSend={handleSend}
+          <div className="border-t bg-white px-6 py-5">
 
-        />
+            <div className="mx-auto max-w-5xl">
 
-    </div>
+              <ChatInput
 
-</div>
+                onSend={handleSend}
+
+              />
+
+            </div>
+
+          </div>
+
+        )
+
+      }
 
     </div>
 

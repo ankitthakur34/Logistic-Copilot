@@ -229,3 +229,18 @@ Answer
 10. Long context memory
 
 Conversation memory.
+
+
+
+
+
+Phase 6 – Premium Finishing Touches
+✅ Smooth message fade-in animation (Framer Motion)
+✅ Typing indicator with animated dots
+✅ Auto-scroll to latest message
+✅ Hover animation on sidebar chats
+✅ Better source badges (green for RAG, blue for SQL, purple for ML later)
+✅ Markdown rendering for assistant responses
+✅ Copy answer button
+✅ Responsive mobile layout
+✅ Nice loading skeleton

@@ -12,26 +12,15 @@ import {
 
 export default function Home() {
 
-  ////////////////////////////////////////////////////////
-  // State
-  ////////////////////////////////////////////////////////
-
   const [chats, setChats] = useState<ChatSession[]>([]);
 
-  const [activeChatId, setActiveChatId] =
-    useState("");
-
-  ////////////////////////////////////////////////////////
-  // New Chat
-  ////////////////////////////////////////////////////////
+  const [activeChatId, setActiveChatId] = useState("");
 
   function createNewChat() {
 
-    const id = crypto.randomUUID();
-
     const chat: ChatSession = {
 
-      id,
+      id: crypto.randomUUID(),
 
       title: "New Chat",
 
@@ -41,65 +30,46 @@ export default function Home() {
 
     };
 
-    setChats(prev => [
+    setChats(prev => [chat, ...prev]);
 
-      chat,
-
-      ...prev,
-
-    ]);
-
-    setActiveChatId(id);
-
-    return id;
+    setActiveChatId(chat.id);
 
   }
 
-  ////////////////////////////////////////////////////////
-  // Auto Create Chat
-  ////////////////////////////////////////////////////////
+  function updateMessages(messages: ChatMessage[]) {
 
-  function ensureActiveChat() {
-
-    if (activeChatId) {
-
-      return activeChatId;
-
-    }
-
-    return createNewChat();
-
-  }
-
-  ////////////////////////////////////////////////////////
-  // Active Chat
-  ////////////////////////////////////////////////////////
-
-  const activeChat = chats.find(
-
-    c => c.id === activeChatId,
-
-  );
-
-  ////////////////////////////////////////////////////////
-  // Update Chat
-  ////////////////////////////////////////////////////////
-
-  function updateChat(
-
-    chatId: string,
-
-    messages: ChatMessage[],
-
-  ) {
+    if (!activeChatId) return;
 
     setChats(prev =>
 
       prev.map(chat => {
 
-        if (chat.id !== chatId) {
+        if (chat.id !== activeChatId) {
 
           return chat;
+
+        }
+
+        let title = chat.title;
+
+        // Rename chat using first user message
+        if (
+          title === "New Chat" &&
+          messages.length > 0
+        ) {
+
+          const firstUserMessage = messages.find(
+            m => m.role === "user"
+          );
+
+          if (firstUserMessage) {
+
+            title =
+              firstUserMessage.content.length > 35
+                ? firstUserMessage.content.slice(0, 35) + "..."
+                : firstUserMessage.content;
+
+          }
 
         }
 
@@ -107,13 +77,7 @@ export default function Home() {
 
           ...chat,
 
-          title:
-
-            chat.title === "New Chat" && messages.length > 0
-
-              ? messages[0].content.substring(0, 35)
-
-              : chat.title,
+          title,
 
           messages,
 
@@ -125,11 +89,15 @@ export default function Home() {
 
   }
 
-  ////////////////////////////////////////////////////////
+  const activeChat = chats.find(
+
+    chat => chat.id === activeChatId
+
+  );
 
   return (
 
-    <div className="flex h-screen bg-slate-100">
+    <div className="flex h-screen">
 
       <Sidebar
 
@@ -142,18 +110,14 @@ export default function Home() {
         onNewChat={createNewChat}
 
       />
-     <div className="flex flex-1 overflow-hidden">
 
       <ChatWindow
 
         chat={activeChat}
 
-        ensureChat={ensureActiveChat}
-
-        onMessagesChange={updateChat}
+        onMessagesChange={updateMessages}
 
       />
-      </div>
 
     </div>
 
