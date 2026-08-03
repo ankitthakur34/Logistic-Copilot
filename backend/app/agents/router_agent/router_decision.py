@@ -7,4 +7,6 @@ class RouterDecision(str, Enum):
 
     RAG = "rag"
 
+    ML = "ml"
+
     UNKNOWN = "unknown"

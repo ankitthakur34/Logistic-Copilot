@@ -24,6 +24,10 @@ class RouterNode:
             state["question"]
 
         )
+        print("=" * 50)
+        print("ROUTER")
+        print(router_result.tools)
+        print("=" * 50)
 
         return {
 

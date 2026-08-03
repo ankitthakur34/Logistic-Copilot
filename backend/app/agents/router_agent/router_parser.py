@@ -110,6 +110,13 @@ class RouterParser:
                     RouterDecision.RAG
 
                 )
+            elif tool == "ml":
+
+                parsed_tools.append(
+
+            RouterDecision.ML
+
+        )    
 
         ##################################################
         # Confidence

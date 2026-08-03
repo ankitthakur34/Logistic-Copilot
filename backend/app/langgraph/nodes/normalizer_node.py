@@ -32,6 +32,28 @@ class NormalizerNode:
         )
 
         ###################################################
+        # Extract shipment number
+        ###################################################
+
+        shipment_match = re.search(
+
+            r"\b(SHP\d+)\b",
+
+            question,
+
+        )
+
+        state["shipment_no"] = (
+
+            shipment_match.group(1)
+
+            if shipment_match
+
+            else None
+
+        )
+
+        ###################################################
         # Normalize container ids (future)
         ###################################################
 

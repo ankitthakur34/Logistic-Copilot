@@ -71,6 +71,36 @@ Examples:
 
 ----------------------------------------
 
+ML
+
+Use ML ONLY when the user wants a prediction about the future.
+
+Examples:
+
+- Will shipment SHP0001 be delayed?
+- Predict shipment delay.
+- Delay probability.
+- Delay risk.
+- Is SHP0005 likely to be delayed?
+- What are the chances SHP0001 will be delayed?
+- Predict if shipment SHP0008 will arrive late.
+
+DO NOT use SQL for prediction requests.
+
+SQL returns current facts.
+
+ML predicts future outcomes.
+
+If the user asks for BOTH current shipment information and a prediction,
+return BOTH:
+
+[
+    "sql",
+    "ml"
+].
+
+----------------------------------------
+
 MULTIPLE TOOLS
 
 You may select MORE THAN ONE tool.

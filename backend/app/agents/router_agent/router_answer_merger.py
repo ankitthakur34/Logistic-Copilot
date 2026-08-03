@@ -63,6 +63,9 @@ class RouterAnswerMerger:
         if not successful:
 
             return "I couldn't find an answer."
+        if len(successful) == 1:
+
+            return successful[0].answer  
 
         context = ""
 

@@ -11,6 +11,7 @@ from app.agents.router_agent.router_answer_merger import RouterAnswerMerger
 from app.agents.router_agent.router_llm import RouterLLM
 
 from app.langgraph.graph import LogisticsCopilotGraph
+from app.tools.ml_tool import MLTool
 
 
 class ServiceRegistry:
@@ -49,6 +50,8 @@ class ServiceRegistry:
 
         )
 
+        self.ml_tool = MLTool()
+
         ###################################################
         # Tool Registry
         ###################################################
@@ -57,6 +60,7 @@ class ServiceRegistry:
 
         self.register_tool(self.sql_tool)
         self.register_tool(self.rag_tool)
+        self.register_tool(self.ml_tool)
 
         ###################################################
         # Shared Components
@@ -80,15 +84,17 @@ class ServiceRegistry:
 
         self.graph = LogisticsCopilotGraph(
 
-            router_llm=self.router_llm,
+    router_llm=self.router_llm,
 
-            sql_tool=self.sql_tool,
+    sql_tool=self.sql_tool,
 
-            rag_tool=self.rag_tool,
+    rag_tool=self.rag_tool,
 
-            answer_merger=self.answer_merger,
+    ml_tool=self.ml_tool,
 
-        )
+    answer_merger=self.answer_merger,
+
+)
 
         ###################################################
         # Router Agent

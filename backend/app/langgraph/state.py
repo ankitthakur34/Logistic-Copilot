@@ -11,6 +11,8 @@ class AgentState(TypedDict):
 
     question: str
 
+    shipment_no: str | None
+
     router_result: RouterResult | None
 
     tool_results: Annotated[
